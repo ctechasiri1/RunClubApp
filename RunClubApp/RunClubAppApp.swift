@@ -9,9 +9,20 @@ import SwiftUI
 
 @main
 struct RunClubAppApp: App {
+    @StateObject private var locationService: LocationService
+    @StateObject private var viewModel: RunTrackerViewModel
+    
+    init() {
+        let service = LocationService()
+        
+        _locationService = StateObject(wrappedValue: service)
+        _viewModel = StateObject(wrappedValue: RunTrackerViewModel(locationService: service))
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
+                .environmentObject(viewModel)
         }
     }
 }
