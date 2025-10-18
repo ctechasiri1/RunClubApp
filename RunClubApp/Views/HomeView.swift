@@ -47,11 +47,11 @@ extension HomeView {
                 .foregroundStyle(.primaryBackground)
             
             Image(systemName: "figure.run")
-                .foregroundStyle(.white)
+                .foregroundStyle(.secondaryBackground)
         }
         .padding()
         .frame(width: 180, height: 60, alignment: .leading)
-        .background(.black.opacity(0.6))
+        .background(.white.opacity(0.8))
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .padding(.top, 40)
     }
@@ -60,6 +60,7 @@ extension HomeView {
         Map(position: $viewModel.displayRegion) {
             UserAnnotation()
         }
+        .offset(y: -10)
     }
     
     private var startButton: some View {
@@ -73,6 +74,6 @@ extension HomeView {
         .frame(width: 80, height: 80)
         .background(.primaryBackground)
         .clipShape(Circle())
-        .padding(.bottom, 40)
+        .padding(.bottom, 140)
     }
 }

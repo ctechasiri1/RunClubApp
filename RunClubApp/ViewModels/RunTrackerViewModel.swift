@@ -13,6 +13,7 @@ class RunTrackerViewModel: ObservableObject {
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
     @Published var presentCountdown: Bool = false
     @Published var countdown: Int = 3
+    @Published var selectedTab: Tab = .home
     
     private let locationService: LocationService
     private var cancellables = Set<AnyCancellable>()
