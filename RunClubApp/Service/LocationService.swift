@@ -9,6 +9,7 @@ import CoreLocation
 import _MapKit_SwiftUI
 import Foundation
 
+//TODO: Add some comments to undestand this
 class LocationService: NSObject, ObservableObject {
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
     

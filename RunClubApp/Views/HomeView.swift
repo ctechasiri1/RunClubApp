@@ -10,7 +10,6 @@ import MapKit
 
 struct HomeView: View {
     @EnvironmentObject private var viewModel: RunTrackerViewModel
-    @EnvironmentObject private var locationService: LocationService
     
     var body: some View {
         NavigationStack {
@@ -22,21 +21,12 @@ struct HomeView: View {
                 }
                 .ignoresSafeArea()
             }
+            .fullScreenCover(isPresented: $viewModel.presentCountdown, content: {
+                CountdownView()
+            })
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    HStack(spacing: 20) {
-                        Text("Run")
-                            .font(.system(.title2, weight: .bold))
-                            .foregroundStyle(.primaryBackground)
-                        
-                        Image(systemName: "figure.run")
-                            .foregroundStyle(.white)
-                    }
-                    .padding()
-                    .frame(width: 120, height: 60, alignment: .leading)
-                    .background(.black.opacity(0.5))
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
-                    .padding(.top, 40)
+                    titleSection
                 }
             }
             .toolbarBackground(.hidden, for: .navigationBar)
@@ -50,16 +40,34 @@ struct HomeView: View {
 }
 
 extension HomeView {
+    private var titleSection: some View {
+        HStack(spacing: 20) {
+            Text("Let's Run")
+                .font(.system(.title2, weight: .bold))
+                .foregroundStyle(.primaryBackground)
+            
+            Image(systemName: "figure.run")
+                .foregroundStyle(.white)
+        }
+        .padding()
+        .frame(width: 180, height: 60, alignment: .leading)
+        .background(.black.opacity(0.6))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .padding(.top, 40)
+    }
+    
     private var mapSection: some View {
-        Map(position: $viewModel.displayRegion)
+        Map(position: $viewModel.displayRegion) {
+            UserAnnotation()
+        }
     }
     
     private var startButton: some View {
         Button {
-            /// insert start timer
+            viewModel.presentCountdown = true
         } label: {
             Text("Start")
-                .foregroundStyle(.black)
+                .foregroundStyle(.white)
                 .font(.system(.title2, weight: .bold))
         }
         .frame(width: 80, height: 80)

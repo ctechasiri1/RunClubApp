@@ -12,6 +12,7 @@ struct RunClubAppApp: App {
     @StateObject private var locationService: LocationService
     @StateObject private var viewModel: RunTrackerViewModel
     
+    //TODO: Add some comments to understand this
     init() {
         let service = LocationService()
         
@@ -21,7 +22,7 @@ struct RunClubAppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            RunClubTabView()
                 .environmentObject(viewModel)
         }
     }

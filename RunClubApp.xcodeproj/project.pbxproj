@@ -10,9 +10,22 @@
 		51A739082EA30C9E009CE990 /* RunClubApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunClubApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		51A739272EA35633009CE990 /* Exceptions for "RunClubApp" folder in "RunClubApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 51A739072EA30C9E009CE990 /* RunClubApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		51A7390A2EA30C9E009CE990 /* RunClubApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				51A739272EA35633009CE990 /* Exceptions for "RunClubApp" folder in "RunClubApp" target */,
+			);
 			path = RunClubApp;
 			sourceTree = "<group>";
 		};
