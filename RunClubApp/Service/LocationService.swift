@@ -48,6 +48,10 @@ class LocationService: NSObject, ObservableObject {
         lastLocation = nil
         distanceCovered = 0.0
     }
+    
+    func invalidateLastLocation() {
+        lastLocation = nil
+    }
 }
 
 // MARK: handles user pop-up to allow location tracking and updates user location
@@ -55,7 +59,7 @@ extension LocationService: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let newLocation = locations.last else { return }
         
-        if let lastLocation = lastLocation {
+        if let lastLocation = self.lastLocation {
             if let distanceIncrement = startLocation?.distance(from: lastLocation) {
                 distanceCovered += distanceIncrement
             }

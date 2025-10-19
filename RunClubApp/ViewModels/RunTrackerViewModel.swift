@@ -97,6 +97,7 @@ class RunTrackerViewModel: ObservableObject {
     
     func pauseWorkout() {
         locationService.stopUpdatingLocation()
+        locationService.invalidateLastLocation()
     }
     
     func resetWorkout() {
