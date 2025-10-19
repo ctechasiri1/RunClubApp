@@ -23,6 +23,9 @@ struct HomeView: View {
             }
             .fullScreenCover(isPresented: $viewModel.presentCountdown, content: {
                 CountdownView()
+                    .onAppear {
+                        viewModel.startCountdownTimer()
+                    }
             })
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

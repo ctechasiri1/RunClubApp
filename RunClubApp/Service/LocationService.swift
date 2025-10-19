@@ -12,6 +12,7 @@ import Foundation
 //TODO: Add some comments to undestand this
 class LocationService: NSObject, ObservableObject {
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
+    @Published var distanceCovered: Double = 0.0
     
     /// Using this to generate/render the map based on the user location
     private let locationManager = CLLocationManager()
@@ -33,22 +34,42 @@ class LocationService: NSObject, ObservableObject {
         guard let unWrappedMapRegion = mapRegion else { return }
         displayRegion = .region(MKCoordinateRegion(center: unWrappedMapRegion, span: mapZoom))
     }
+    
+    func startUpdatingLocation() {
+        locationManager.startUpdatingLocation()
+    }
+    
+    func stopUpdatingLocation() {
+        locationManager.stopUpdatingLocation()
+    }
+    
+    func resetLocation() {
+        startLocation = nil
+        lastLocation = nil
+        distanceCovered = 0.0
+    }
 }
 
 // MARK: handles user pop-up to allow location tracking and updates user location
 extension LocationService: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
+        guard let newLocation = locations.last else { return }
         
-        mapRegion = location.coordinate
+        if let lastLocation = lastLocation {
+            if let distanceIncrement = startLocation?.distance(from: lastLocation) {
+                distanceCovered += distanceIncrement
+            }
+        }
+        
+        mapRegion = newLocation.coordinate
         
         updateDisplayRegion()
         
         if startLocation == nil {
-            startLocation = location
+            startLocation = newLocation
             return
         }
         
-        lastLocation = location
+        lastLocation = newLocation
     }
 }

@@ -12,12 +12,13 @@ struct CountdownView: View {
     
     var body: some View {
         Text("\(viewModel.countdown)")
+            .foregroundStyle(.white)
+            .contentTransition(.numericText())
             .font(.system(size: 250, weight: .bold))
-            .animation(.smooth, value: viewModel.countdown)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.primaryBackground)
-            .onAppear {
-                viewModel.timerCountdown()
+            .fullScreenCover(isPresented: $viewModel.presentWorkout) {
+                RunView()
             }
     }
 }

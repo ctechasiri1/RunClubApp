@@ -17,7 +17,6 @@ struct RunClubTabView: View {
                     .tag(Tab.home)
                     .toolbarVisibility(.hidden, for: .tabBar)
             }
-            
             tabBar
         }
     }
@@ -25,6 +24,7 @@ struct RunClubTabView: View {
 
 #Preview {
     RunClubTabView()
+        .environmentObject(RunTrackerViewModel(locationService: LocationService()))
 }
 
 extension RunClubTabView {
@@ -34,7 +34,7 @@ extension RunClubTabView {
             
             Image(systemName: imageName)
                 .resizable()
-                .foregroundStyle(isActive ? .secondaryBackground : .gray)
+                .foregroundStyle(isActive ? .white : .gray)
                 .frame(width: 20, height: 20)
             
             if isActive {
@@ -58,7 +58,11 @@ extension RunClubTabView {
                     Button {
                         viewModel.selectedTab = tab
                     } label: {
-                        customTabBarItem(title: tab.title, imageName: tab.iconName, isActive: viewModel.selectedTab == tab)
+                        customTabBarItem(
+                            title: tab.title,
+                            imageName: tab.iconName,
+                            isActive: viewModel.selectedTab == tab
+                        )
                     }
                 }
             }
