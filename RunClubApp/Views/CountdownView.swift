@@ -18,7 +18,7 @@ struct CountdownView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(.primaryBackground)
             .fullScreenCover(isPresented: $viewModel.presentWorkout) {
-                RunView()
+                WorkoutView()
             }
     }
 }

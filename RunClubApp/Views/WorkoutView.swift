@@ -1,5 +1,5 @@
 //
-//  RunView.swift
+//  WorkoutView.swift
 //  RunClubApp
 //
 //  Created by Chiraphat Techasiri on 10/18/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RunView: View {
+struct WorkoutView: View {
     @EnvironmentObject private var viewModel: RunTrackerViewModel
     
     var body: some View {
@@ -23,7 +23,6 @@ struct RunView: View {
             
             HStack(spacing: 30) {
                 avgPaceSection
-                
                 heartRateSection
             }
             .padding(.bottom, 80)
@@ -41,7 +40,11 @@ struct RunView: View {
             
             Spacer()
         }
+        .fullScreenCover(isPresented: $viewModel.presentPauseWorkout, content: {
+            PauseWorkoutView()
+        })
         .onAppear {
+            viewModel.resetWorkout()
             viewModel.resumeWorkout()
             viewModel.startWorkoutTimer()
             viewModel.workoutIsPaused = false
@@ -50,10 +53,11 @@ struct RunView: View {
 }
 
 #Preview {
-    RunView()
+    WorkoutView()
+        .environmentObject(RunTrackerViewModel(locationService: LocationService()))
 }
 
-extension RunView {
+extension WorkoutView {
     private var timeSection: some View {
         VStack {
             Text(viewModel.converToTimerFormat(from: viewModel.elapsedTime))
@@ -76,8 +80,9 @@ extension RunView {
     
     private var avgPaceSection: some View {
         VStack {
-            Text("9'00''")
+            Text(viewModel.pace)
                 .font(.system(size: 35, weight: .regular))
+            
             Text("AVG PACE")
                 .foregroundStyle(.gray)
         }
@@ -88,6 +93,7 @@ extension RunView {
             HStack {
                 Text("145")
                     .font(.system(size: 35, weight: .regular))
+                
                 Text("BPM")
                     .foregroundStyle(.gray)
                     .font(.system(size: 25, weight: .regular))
@@ -105,13 +111,14 @@ extension RunView {
     
     private var pauseButton: some View {
         Button {
-            viewModel.workoutIsPaused.toggle()
-            viewModel.startWorkoutTimer()
-            if viewModel.workoutIsPaused {
-                viewModel.pauseWorkout()
-            } else {
-                viewModel.resumeWorkout()
-            }
+            viewModel.presentPauseWorkout = true
+//            viewModel.workoutIsPaused.toggle()
+//            viewModel.startWorkoutTimer()
+//            if viewModel.workoutIsPaused {
+//                viewModel.pauseWorkout()
+//            } else {
+//                viewModel.resumeWorkout()
+//            }
         } label: {
             Image(systemName: viewModel.workoutIsPaused ? "play.fill" : "pause.fill")
                 .font(.system(.largeTitle))

@@ -63,7 +63,6 @@ extension HomeView {
         Map(position: $viewModel.displayRegion) {
             UserAnnotation()
         }
-        .offset(y: -10)
     }
     
     private var startButton: some View {

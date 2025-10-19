@@ -16,6 +16,10 @@ struct RunClubTabView: View {
                 HomeView()
                     .tag(Tab.home)
                     .toolbarVisibility(.hidden, for: .tabBar)
+                
+                ActivitiesView()
+                    .tag(Tab.activity)
+                    .toolbarVisibility(.hidden, for: .tabBar)
             }
             tabBar
         }

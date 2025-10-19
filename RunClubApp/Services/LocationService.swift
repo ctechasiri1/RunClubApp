@@ -12,6 +12,7 @@ import Foundation
 //TODO: Add some comments to undestand this
 class LocationService: NSObject, ObservableObject {
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
+    @Published var locationList: [CLLocationCoordinate2D] = []
     @Published var distanceCovered: Double = 0.0
     
     /// Using this to generate/render the map based on the user location
@@ -71,9 +72,11 @@ extension LocationService: CLLocationManagerDelegate {
         
         if startLocation == nil {
             startLocation = newLocation
+            locationList.append(newLocation.coordinate)
             return
         }
         
         lastLocation = newLocation
+        locationList.append(newLocation.coordinate)
     }
 }
