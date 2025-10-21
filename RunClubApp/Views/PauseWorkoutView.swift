@@ -12,43 +12,66 @@ struct PauseWorkoutView: View {
     @EnvironmentObject private var viewModel: RunTrackerViewModel
     
     var body: some View {
-        Spacer()
-        
         VStack {
-            
-            distanceCard
-            
-            HStack {
-                card(imageName: MetricCard.pace.imageName, meteric: MetricCard.pace.title, data: "0.00", unit: MetricCard.pace.unitOfMeasurement)
-                card(imageName: MetricCard.duration.imageName, meteric: MetricCard.duration.title, data: "00:00:00", unit: MetricCard.duration.unitOfMeasurement)
-            }
-            
-            HStack {
-                card(imageName: MetricCard.elevation.imageName, meteric: MetricCard.elevation.title, data: "00", unit: MetricCard.elevation.unitOfMeasurement)
-                card(imageName: MetricCard.heartrate.imageName, meteric: MetricCard.heartrate.title, data: "000", unit: MetricCard.heartrate.unitOfMeasurement)
-            }
+            backgroundMap
             
             Spacer()
             
-            Map(position: $viewModel.displayRegion) {
-                MapPolyline(coordinates: viewModel.locationList)
-                    .stroke(.blue, lineWidth: 5)
+            VStack {
+                cardTitle
+                
+                Divider()
+                    .frame(width: 350)
+                
+                HStack {
+                    
+                    mileMetric
+                    
+                    Divider()
+                        .frame(height: 30)
+                    
+                    timeMetric
+                    
+                    Divider()
+                        .frame(height: 30)
+                    
+                    paceMetric
+                }
+                .padding([.leading, .trailing, .top])
+                
+                VStack(alignment: .leading, spacing: 10) {
+                    
+                    technicalMetricTitle
+                    
+                    Divider()
+                        .frame(width: 350)
+                    
+                    heartRateMetric
+                    
+                    Divider()
+                        .frame(width: 350)
+                    
+                    calorieMetric
+                    
+                    Divider()
+                        .frame(width: 350)
+                    
+                    elevationMetric
+                    
+                }
+                .frame(alignment: .leading)
+                .padding()
             }
-            .frame(height: (UIScreen.main.bounds.height / 4))
+            .background(.white)
             .clipShape(RoundedRectangle(cornerRadius: 20))
-            .padding(.bottom)
-            
-            Spacer()
+            .offset(y: -60)
             
             HStack(spacing: 20) {
                 resumeButton
                 finishButton
             }
-            
-            Spacer()
+            .offset(y: -20)
         }
-        .padding()
-        .ignoresSafeArea()
     }
 }
 
@@ -58,54 +81,123 @@ struct PauseWorkoutView: View {
 }
 
 extension PauseWorkoutView {
-    private var distanceCard: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Image(systemName: "ruler.fill")
-                Text("TOTAL DISTANCE")
-            }
-            .foregroundStyle(.gray)
-            .padding(.top)
-            
-            Text("0.00")
-                .font(.system(size: 60, weight: .bold, design: .default))
-            Text("MILES")
-                .foregroundStyle(.gray)
-                .padding(.bottom)
+    private var cardTitle: some View {
+        HStack {
+            TextField("Enter Title", text: $viewModel.runTitle)
+                .font(.system(.largeTitle, design: .default, weight: .bold))
+                .foregroundStyle(.secondaryBackground)
+                .padding([.top, .leading, .trailing])
         }
-        .padding(.leading)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 150)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .padding(.top, 60)
+        .padding()
     }
     
-    private func card(imageName: String, meteric: String, data: String, unit: String) -> some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Image(systemName: imageName)
-                Text(meteric)
-            }
-            .padding(.top)
+    private var mileMetric: some View {
+        VStack {
+            Text(viewModel.convertToMile(from: viewModel.distance))
+                .font(.system(.title, design: .default, weight: .bold))
+                .foregroundStyle(.primaryBackground)
             
-            Text(data)
-                .font(.system(size: 30, weight: .bold))
-            Text(unit)
+            Text("MILES")
                 .foregroundStyle(.gray)
-                .padding(.bottom)
         }
-        .padding(.leading)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 120)
-        .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .padding(5)
+        .frame(maxWidth: .infinity)
+    }
+    
+    private var timeMetric: some View {
+        VStack {
+            Text(viewModel.converToTimerFormat(from: viewModel.elapsedTime))
+                .font(.system(.title2, design: .default, weight: .bold))
+            
+            Text("TIME")
+                .foregroundStyle(.gray)
+        }
+        .frame(maxWidth: .infinity)
+    }
+    
+    private var paceMetric: some View {
+        VStack {
+            Text(viewModel.pace)
+                .font(.system(.title2, design: .default, weight: .bold))
+            
+            Text("PACE")
+                .foregroundStyle(.gray)
+        }
+        .frame(maxWidth: .infinity)
+    }
+    
+    private var technicalMetricTitle: some View {
+        Text("Technical Metric")
+            .font(.system(.title3, design: .default, weight: .bold))
+    }
+    
+    private var heartRateMetric: some View {
+        HStack {
+            Image(systemName: "heart.fill")
+                .foregroundStyle(.pink.opacity(0.6))
+            
+            Text("Average Heart Rate")
+            
+            Spacer()
+            
+            Text("159")
+                .font(.system(.title3, design: .default, weight: .bold))
+            
+            Text("BPM")
+                .foregroundStyle(.gray)
+        }
+        .padding(8)
+    }
+    
+    private var calorieMetric: some View {
+        
+        HStack {
+            Image(systemName: "bolt.fill")
+                .foregroundStyle(.yellow.opacity(0.6))
+            
+            Text("Total Calories Burned")
+            
+            Spacer()
+            
+            Text("159")
+                .font(.system(.title3, design: .default, weight: .bold))
+            
+            Text("kCal")
+                .foregroundStyle(.gray)
+        }
+        .padding(8)
+    }
+    
+    private var elevationMetric: some View {
+        HStack {
+            Image(systemName: "line.diagonal.arrow")
+                .foregroundStyle(.green.opacity(0.6))
+            
+            Text("Elevation Gain")
+            
+            Spacer()
+            
+            Text("56")
+                .font(.system(.title3, design: .default, weight: .bold))
+            
+            Text("ft")
+                .foregroundStyle(.gray)
+        }
+        .padding(8)
+    }
+    
+    private var backgroundMap: some View {
+        Map(position: $viewModel.displayRegion) {
+            MapPolyline(coordinates: viewModel.locationList)
+                .stroke(.primaryBackground, lineWidth: 5)
+        }
+        .ignoresSafeArea()
     }
     
     private var resumeButton: some View {
         Button {
-            
+            viewModel.presentPauseWorkout = false
+            viewModel.resumeWorkout()
+            viewModel.startWorkoutTimer()
         } label: {
             HStack {
                 Text("Resume")
@@ -121,7 +213,8 @@ extension PauseWorkoutView {
     
     private var finishButton: some View {
         Button {
-            
+            viewModel.resetWorkout()
+            viewModel.exitWorkout()
         } label: {
             HStack {
                 Text("Finish")

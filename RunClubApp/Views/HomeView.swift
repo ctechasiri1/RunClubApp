@@ -77,5 +77,6 @@ extension HomeView {
         .background(.primaryBackground)
         .clipShape(Circle())
         .padding(.bottom, 140)
+        .shadow(color: .primaryBackground, radius: 10)
     }
 }

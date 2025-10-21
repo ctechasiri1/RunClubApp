@@ -11,22 +11,26 @@ import Foundation
 import AudioToolbox
 
 class RunTrackerViewModel: ObservableObject {
-    /// for rendering the coorindates in map from location service
+    /// for rendering the coorindates in map
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
     
-    /// for the 'CountdownView' 
-    @Published var presentCountdown: Bool = false
-    @Published var countdown: Int = 3
-    
+    /// for the 'HomeView'
     @Published var selectedTab: Tab = .home
+    @Published var presentCountdown: Bool = false
     
-    @Published var workoutIsPaused: Bool = false
+    /// for the 'CountdownView'
+    @Published var countdown: Int = 3
     @Published var presentWorkout: Bool = false
+    
+    /// for the 'WorkoutView'
+    @Published var pace: String = "00:00"
     @Published var distance: Double = 0.0
     @Published var elapsedTime: Double = 0.0
-    @Published var pace: String = "00:00"
-    
+    @Published var workoutIsPaused: Bool = false
     @Published var presentPauseWorkout: Bool = false
+    
+    /// for the 'PauseWorkoutView'
+    @Published var runTitle: String = ""
     @Published var locationList: [CLLocationCoordinate2D] = []
     
     private let mileMultipler = 0.000621371
@@ -60,27 +64,13 @@ class RunTrackerViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    func startCountdownTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
-            if self.countdown > 0 {
-                self.countdown -= 1
-            } else {
-                self.stopTimer()
-                self.presentWorkout = true
-            }
-        })
-    }
-    
-    func stopTimer() {
-        timer?.invalidate()
-        timer = nil
-    }
-    
+    /// this converts 'distance' (recorded in meters) to the formatted miles
     func convertToMile(from distance : Double) -> String {
         let distanceInMile = (distance * mileMultipler)
         return String(format: "%.2f", distanceInMile)
     }
     
+    /// this converts 'elpasedTime' (recorded in seconds) to the foramtted time
     func converToTimerFormat(from seconds: Double) -> String {
         let formatter = DateComponentsFormatter()
         
@@ -91,6 +81,7 @@ class RunTrackerViewModel: ObservableObject {
         return formatter.string(from: seconds) ?? "00:00:00"
     }
     
+    /// this converts 'pace' (recorded in seconds) to the formatted time
     func convertToPace(from seconds: Double) -> String {
         let formatter = DateComponentsFormatter()
         
@@ -99,6 +90,17 @@ class RunTrackerViewModel: ObservableObject {
         formatter.zeroFormattingBehavior = .pad
         
         return formatter.string(from: seconds) ?? "00:00"
+    }
+    
+    func startCountdownTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
+            if self.countdown > 0 {
+                self.countdown -= 1
+            } else {
+                self.stopTimer()
+                self.presentWorkout = true
+            }
+        })
     }
     
     func startWorkoutTimer() {
@@ -119,6 +121,11 @@ class RunTrackerViewModel: ObservableObject {
         })
     }
     
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
     func resumeWorkout() {
         locationService.startUpdatingLocation()
     }
@@ -131,6 +138,7 @@ class RunTrackerViewModel: ObservableObject {
     
     func resetWorkout() {
         elapsedTime = 0.0
+        locationList = []
         locationService.resetLocation()
     }
     

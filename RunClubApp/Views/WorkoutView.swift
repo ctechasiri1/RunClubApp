@@ -112,13 +112,8 @@ extension WorkoutView {
     private var pauseButton: some View {
         Button {
             viewModel.presentPauseWorkout = true
-//            viewModel.workoutIsPaused.toggle()
-//            viewModel.startWorkoutTimer()
-//            if viewModel.workoutIsPaused {
-//                viewModel.pauseWorkout()
-//            } else {
-//                viewModel.resumeWorkout()
-//            }
+            viewModel.stopTimer()
+            viewModel.pauseWorkout()
         } label: {
             Image(systemName: viewModel.workoutIsPaused ? "play.fill" : "pause.fill")
                 .font(.system(.largeTitle))
