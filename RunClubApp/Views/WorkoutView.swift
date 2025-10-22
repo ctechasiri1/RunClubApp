@@ -37,17 +37,11 @@ struct WorkoutView: View {
             .padding(.leading, 80)
             .foregroundStyle(.white)
             
-            
             Spacer()
         }
-        .fullScreenCover(isPresented: $viewModel.presentPauseWorkout, content: {
-            PauseWorkoutView()
-        })
         .onAppear {
-            viewModel.resetRun()
             viewModel.resumeRun()
             viewModel.startWorkoutTimer()
-            viewModel.workoutIsPaused = false
         }
     }
 }
@@ -111,8 +105,9 @@ extension WorkoutView {
     
     private var pauseButton: some View {
         Button {
-            viewModel.presentPauseWorkout = true
-            viewModel.stopTimer()
+            viewModel.currentFullScreenCover = .pauseworkout
+            viewModel.workoutIsPaused = true
+//            viewModel.stopTimer()
             viewModel.pauseRun()
         } label: {
             Image(systemName: viewModel.workoutIsPaused ? "play.fill" : "pause.fill")

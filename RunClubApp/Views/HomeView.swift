@@ -21,11 +21,8 @@ struct HomeView: View {
                 }
                 .ignoresSafeArea()
             }
-            .fullScreenCover(isPresented: $viewModel.presentCountdown, content: {
-                CountdownView()
-                    .onAppear {
-                        viewModel.startCountdownTimer()
-                    }
+            .fullScreenCover(isPresented: $viewModel.presentFullScreenCover, content: {
+                FullScreenCoverContainerView()
             })
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -67,7 +64,7 @@ extension HomeView {
     
     private var startButton: some View {
         Button {
-            viewModel.presentCountdown = true
+            viewModel.presentFullScreenCover = true
         } label: {
             Text("Start")
                 .foregroundStyle(.white)

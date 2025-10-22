@@ -195,9 +195,9 @@ extension PauseWorkoutView {
     
     private var resumeButton: some View {
         Button {
-            viewModel.presentPauseWorkout = false
+            viewModel.currentFullScreenCover = .workout
             viewModel.resumeRun()
-            viewModel.startWorkoutTimer()
+            viewModel.workoutIsPaused = false
         } label: {
             HStack {
                 Text("Resume")

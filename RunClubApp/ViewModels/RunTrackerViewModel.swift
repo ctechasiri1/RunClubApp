@@ -16,18 +16,17 @@ class RunTrackerViewModel: ObservableObject {
     
     /// for the 'HomeView'
     @Published var selectedTab: Tab = .home
-    @Published var presentCountdown: Bool = false
+    @Published var presentFullScreenCover: Bool = false
+    @Published var currentFullScreenCover: FullScreenCoverState = .countdown
     
     /// for the 'CountdownView'
     @Published var countdown: Int = 3
-    @Published var presentWorkout: Bool = false
     
     /// for the 'WorkoutView'
     @Published var pace: String = "00:00"
     @Published var distance: Double = 0.0
     @Published var elapsedTime: Double = 0.0
     @Published var workoutIsPaused: Bool = false
-    @Published var presentPauseWorkout: Bool = false
     
     /// for the 'PauseWorkoutView'
     @Published var runTitle: String = ""
@@ -98,7 +97,9 @@ class RunTrackerViewModel: ObservableObject {
                 self.countdown -= 1
             } else {
                 self.stopTimer()
-                self.presentWorkout = true
+                self.pauseRun()
+                self.resetRun()
+                self.currentFullScreenCover = .workout
             }
         })
     }
@@ -127,10 +128,12 @@ class RunTrackerViewModel: ObservableObject {
     }
     
     func resumeRun() {
+        startWorkoutTimer()
         locationService.startUpdatingLocation()
     }
     
     func pauseRun() {
+        stopTimer()
         locationService.stopUpdatingLocation()
         locationService.invalidateLastLocation()
         AudioServicesPlayAlertSoundWithCompletion(SystemSoundID(kSystemSoundID_Vibrate)) { }
@@ -144,15 +147,16 @@ class RunTrackerViewModel: ObservableObject {
     
     func exitRun() {
         countdown = 3
-        presentCountdown = false
-        presentWorkout = false
-        presentPauseWorkout = false
+        presentFullScreenCover = false
+        currentFullScreenCover = .countdown
     }
     
     func stopRun() {
         Task {
             await saveRun()
         }
+        resetRun()
+        exitRun()
     }
     
     func saveRun() async {
