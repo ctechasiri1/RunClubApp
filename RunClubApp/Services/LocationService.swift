@@ -44,14 +44,14 @@ class LocationService: NSObject, ObservableObject {
         locationManager.stopUpdatingLocation()
     }
     
-    func resetLocation() {
+    func invalidateLastLocation() {
+        lastLocation = nil
+    }
+    
+    func resetRunData() {
         startLocation = nil
         lastLocation = nil
         distanceCovered = 0.0
-    }
-    
-    func invalidateLastLocation() {
-        lastLocation = nil
     }
 }
 

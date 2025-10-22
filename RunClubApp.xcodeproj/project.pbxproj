@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		5168FFCC2EA4BE14002276F0 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 5168FFCB2EA4BE14002276F0 /* Supabase */; };
+		5168FFDE2EA87CFC002276F0 /* ConfidentialKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5168FFDD2EA87CFC002276F0 /* ConfidentialKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5168FFD72EA8535C002276F0 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Secrets.xcconfig; path = "/Users/chiraphattechasiri/Desktop/IOS Projects/RunClubApp/RunClubApp/Config/Secrets.xcconfig"; sourceTree = "<absolute>"; };
 		51A739082EA30C9E009CE990 /* RunClubApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunClubApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -41,6 +43,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5168FFCC2EA4BE14002276F0 /* Supabase in Frameworks */,
+				5168FFDE2EA87CFC002276F0 /* ConfidentialKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +80,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5168FFE12EA87D38002276F0 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				51A7390A2EA30C9E009CE990 /* RunClubApp */,
@@ -84,6 +88,7 @@
 			name = RunClubApp;
 			packageProductDependencies = (
 				5168FFCB2EA4BE14002276F0 /* Supabase */,
+				5168FFDD2EA87CFC002276F0 /* ConfidentialKit */,
 			);
 			productName = RunClubApp;
 			productReference = 51A739082EA30C9E009CE990 /* RunClubApp.app */;
@@ -115,6 +120,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				5168FFCA2EA4BE14002276F0 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+				5168FFDC2EA87CFC002276F0 /* XCRemoteSwiftPackageReference "swift-confidential" */,
+				5168FFDF2EA87D0B002276F0 /* XCRemoteSwiftPackageReference "swift-confidential-plugin" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 51A739092EA30C9E009CE990 /* Products */;
@@ -146,9 +153,17 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5168FFE12EA87D38002276F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 5168FFE02EA87D38002276F0 /* Confidential */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		51A739142EA30CA0009CE990 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5168FFD72EA8535C002276F0 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -212,6 +227,7 @@
 		};
 		51A739152EA30CA0009CE990 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5168FFD72EA8535C002276F0 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -268,6 +284,7 @@
 		};
 		51A739172EA30CA0009CE990 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5168FFD72EA8535C002276F0 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -302,6 +319,7 @@
 		};
 		51A739182EA30CA0009CE990 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5168FFD72EA8535C002276F0 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -366,6 +384,22 @@
 				minimumVersion = 2.5.1;
 			};
 		};
+		5168FFDC2EA87CFC002276F0 /* XCRemoteSwiftPackageReference "swift-confidential" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/securevale/swift-confidential.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.2;
+			};
+		};
+		5168FFDF2EA87D0B002276F0 /* XCRemoteSwiftPackageReference "swift-confidential-plugin" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/securevale/swift-confidential-plugin.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -373,6 +407,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5168FFCA2EA4BE14002276F0 /* XCRemoteSwiftPackageReference "supabase-swift" */;
 			productName = Supabase;
+		};
+		5168FFDD2EA87CFC002276F0 /* ConfidentialKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5168FFDC2EA87CFC002276F0 /* XCRemoteSwiftPackageReference "swift-confidential" */;
+			productName = ConfidentialKit;
+		};
+		5168FFE02EA87D38002276F0 /* Confidential */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5168FFDF2EA87D0B002276F0 /* XCRemoteSwiftPackageReference "swift-confidential-plugin" */;
+			productName = "plugin:Confidential";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

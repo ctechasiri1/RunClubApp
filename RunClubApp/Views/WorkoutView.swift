@@ -44,8 +44,8 @@ struct WorkoutView: View {
             PauseWorkoutView()
         })
         .onAppear {
-            viewModel.resetWorkout()
-            viewModel.resumeWorkout()
+            viewModel.resetRun()
+            viewModel.resumeRun()
             viewModel.startWorkoutTimer()
             viewModel.workoutIsPaused = false
         }
@@ -113,7 +113,7 @@ extension WorkoutView {
         Button {
             viewModel.presentPauseWorkout = true
             viewModel.stopTimer()
-            viewModel.pauseWorkout()
+            viewModel.pauseRun()
         } label: {
             Image(systemName: viewModel.workoutIsPaused ? "play.fill" : "pause.fill")
                 .font(.system(.largeTitle))
@@ -127,7 +127,7 @@ extension WorkoutView {
     
     private var resetButton: some View {
         Button {
-            viewModel.resetWorkout()
+            viewModel.resetRun()
         } label: {
             Image(systemName: "square.fill")
                 .font(.system(.title3))
@@ -139,8 +139,8 @@ extension WorkoutView {
     
     private var exitButton: some View {
         Button {
-            viewModel.exitWorkout()
-            viewModel.resetWorkout()
+            viewModel.exitRun()
+            viewModel.resetRun()
         } label: {
             Image(systemName: "arrow.down.right.and.arrow.up.left")
                 .font(.system(.title3))

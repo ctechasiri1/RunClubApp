@@ -126,25 +126,53 @@ class RunTrackerViewModel: ObservableObject {
         timer = nil
     }
     
-    func resumeWorkout() {
+    func resumeRun() {
         locationService.startUpdatingLocation()
     }
     
-    func pauseWorkout() {
+    func pauseRun() {
         locationService.stopUpdatingLocation()
         locationService.invalidateLastLocation()
         AudioServicesPlayAlertSoundWithCompletion(SystemSoundID(kSystemSoundID_Vibrate)) { }
     }
     
-    func resetWorkout() {
+    func resetRun() {
         elapsedTime = 0.0
         locationList = []
-        locationService.resetLocation()
+        locationService.resetRunData()
     }
     
-    func exitWorkout() {
+    func exitRun() {
         countdown = 3
         presentCountdown = false
+        presentWorkout = false
+        presentPauseWorkout = false
+    }
+    
+    func stopRun() {
+        Task {
+            await saveRun()
+        }
+    }
+    
+    func saveRun() async {
+        let newRun = Run(
+            id: nil,
+            createdAt: nil,
+            distance: convertToMile(from: distance),
+            elpasedTime: converToTimerFormat(from: elapsedTime),
+            pace: convertToPace(from: elapsedTime),
+            title: runTitle
+        )
+        
+        do {
+            try await SupabaseManager.shared.client
+                .from("Runs")
+                .insert(newRun)
+                .execute()
+        } catch {
+            print("❌ Error saving run: \(error.localizedDescription)")
+        }
     }
 }
 
