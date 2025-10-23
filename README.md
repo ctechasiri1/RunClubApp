@@ -5,6 +5,11 @@ RunClubApp
 
 This project demonstrates proficiency in building a **location-aware**, data-intensive application for a dedicated fitness niche, highlighting competence in **SwiftUI**, **Core Location**, and **Supabase** for data persistence.
 
+<img width="300" height="600" alt="Simulator Screenshot - iPhone 16 Pro - 2025-10-21 at 20 34 29" src="https://github.com/user-attachments/assets/2deb2358-920e-4f36-aaac-9d3d1ac895d0" />
+<img width="300" height="600" alt="Simulator Screenshot - iPhone 16 Pro - 2025-10-21 at 20 34 53" src="https://github.com/user-attachments/assets/9a6e9615-d97e-4ada-9987-36c96741be18" />
+<img width="300" height="600" alt="Simulator Screenshot - iPhone 16 Pro - 2025-10-21 at 20 35 02" src="https://github.com/user-attachments/assets/0dbfcc71-86ed-4d7d-9257-dee7d06f0590" />
+
+
 ✨ Features
 ----------
 
