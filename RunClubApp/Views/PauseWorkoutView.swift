@@ -213,10 +213,8 @@ extension PauseWorkoutView {
     
     private var finishButton: some View {
         Button {
-            viewModel.resetRun()
-            viewModel.exitRun()
             Task {
-                await viewModel.saveRunData()
+                await viewModel.stopRun()
             }
         } label: {
             HStack {

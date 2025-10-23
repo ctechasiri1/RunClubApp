@@ -20,10 +20,10 @@ final class SupabaseManager {
         self.client = SupabaseClient(supabaseURL: URL(string: apiUrl)!, supabaseKey: apiKey)
     }
     
-    func saveRun(newRun: Run) async throws {
+    func saveRun(added: Run) async throws {
         try await client
             .from("Runs")
-            .insert(newRun)
+            .insert(added)
             .execute()
     }
     

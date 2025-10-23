@@ -158,26 +158,31 @@ class RunTrackerViewModel: ObservableObject {
         presentFullScreenCover = false
     }
     
-    func stopRun() {
-        resetRun()
-        exitRun()
+    func stopRun() async {
+        do {
+            try await saveRunData()
+            
+            await MainActor.run {
+                self.resetRun()
+                self.exitRun()
+            }
+        } catch {
+            print("❌ Error saving run: \(error.localizedDescription)")
+        }
     }
     
-    func saveRunData() async {
+    func saveRunData() async throws {
         let currentRun = Run(
             id: nil,
             createdAt: nil,
             distance: convertToMile(from: distance),
             elpasedTime: converToTimerFormat(from: elapsedTime),
             pace: convertToPace(from: distance),
-            title: runTitle)
+            title: runTitle
+        )
         
-        do {
-            try await dataService.saveRun(newRun: currentRun)
-            print("✅ Run saved successfully.")
-        } catch {
-            print("❌ Error saving run: \(error.localizedDescription)")
-        }
+        try await dataService.saveRun(added: currentRun)
+        print("✅ Run saved successfully.")
     }
     
     func fetchRunData() async {

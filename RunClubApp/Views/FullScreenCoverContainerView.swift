@@ -19,9 +19,6 @@ struct FullScreenCoverContainerView: View {
             switch viewModel.currentFullScreenCover {
             case .countdown:
                 CountdownView()
-                    .onAppear {
-                        viewModel.startCountdownTimer()
-                    }
             case .workout:
                 WorkoutView()
             case .pauseworkout:
