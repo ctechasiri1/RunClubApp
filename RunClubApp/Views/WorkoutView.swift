@@ -48,7 +48,7 @@ struct WorkoutView: View {
 
 #Preview {
     WorkoutView()
-        .environmentObject(RunTrackerViewModel(locationService: LocationService()))
+        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
 }
 
 extension WorkoutView {

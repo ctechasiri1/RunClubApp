@@ -36,7 +36,7 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
-        .environmentObject(RunTrackerViewModel(locationService: LocationService()))
+        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
 }
 
 extension HomeView {
@@ -65,6 +65,7 @@ extension HomeView {
     private var startButton: some View {
         Button {
             viewModel.presentFullScreenCover = true
+            viewModel.currentFullScreenCover = .countdown
         } label: {
             Text("Start")
                 .foregroundStyle(.white)

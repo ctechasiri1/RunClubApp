@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct ActivitiesView: View {
+    @EnvironmentObject private var viewModel: RunTrackerViewModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView {
+            ForEach(viewModel.runs, id: \.id) { run in
+                Text(run.title)
+            }
+        }
+        .onAppear {
+            Task {
+                await viewModel.fetchRunData()
+            }
+        }
     }
 }
 
 #Preview {
     ActivitiesView()
+        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
 }

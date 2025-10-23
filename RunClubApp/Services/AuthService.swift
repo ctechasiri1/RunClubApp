@@ -16,7 +16,22 @@ final class SupabaseManager {
     static let shared = SupabaseManager()
     let client: SupabaseClient
 
-    private init() {
+    init() {
         self.client = SupabaseClient(supabaseURL: URL(string: apiUrl)!, supabaseKey: apiKey)
+    }
+    
+    func saveRun(newRun: Run) async throws {
+        try await client
+            .from("Runs")
+            .insert(newRun)
+            .execute()
+    }
+    
+    func fetchRunData() async throws -> [Run] {
+        try await client
+            .from("Runs")
+            .select()
+            .execute()
+            .value
     }
 }

@@ -1,5 +1,5 @@
 //
-//  LocationService.swift
+//  LocationManager.swift
 //  RunClubApp
 //
 //  Created by Chiraphat Techasiri on 10/17/25.
@@ -10,7 +10,7 @@ import _MapKit_SwiftUI
 import Foundation
 
 //TODO: Add some comments to undestand this
-class LocationService: NSObject, ObservableObject {
+class MapKitManager: NSObject, ObservableObject {
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
     @Published var locationList: [CLLocationCoordinate2D] = []
     @Published var distanceCovered: Double = 0.0
@@ -56,7 +56,7 @@ class LocationService: NSObject, ObservableObject {
 }
 
 // MARK: handles user pop-up to allow location tracking and updates user location
-extension LocationService: CLLocationManagerDelegate {
+extension MapKitManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let newLocation = locations.last else { return }
         

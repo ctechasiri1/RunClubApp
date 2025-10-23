@@ -77,7 +77,7 @@ struct PauseWorkoutView: View {
 
 #Preview {
     PauseWorkoutView()
-        .environmentObject(RunTrackerViewModel(locationService: LocationService()))
+        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
 }
 
 extension PauseWorkoutView {
@@ -216,7 +216,7 @@ extension PauseWorkoutView {
             viewModel.resetRun()
             viewModel.exitRun()
             Task {
-                await viewModel.saveRun()
+                await viewModel.saveRunData()
             }
         } label: {
             HStack {

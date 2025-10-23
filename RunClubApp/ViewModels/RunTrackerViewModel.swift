@@ -32,14 +32,22 @@ class RunTrackerViewModel: ObservableObject {
     @Published var runTitle: String = ""
     @Published var locationList: [CLLocationCoordinate2D] = []
     
+    /// for the "ActivitiesView'
+    @Published var runs: [Run] = []
+    
     private let mileMultipler = 0.000621371
-    private let locationService: LocationService
+    private let locationService: MapKitManager
+    private let dataService: SupabaseManager
     private var cancellables = Set<AnyCancellable>()
     private var timer: Timer?
     
-    init(locationService: LocationService) {
+    init(locationService: MapKitManager, dataService: SupabaseManager) {
         self.locationService = locationService
+        self.dataService = dataService
         addSubscriber()
+        Task {
+            await fetchRunData()
+        }
     }
     
     //TODO: add some comments to understand this
@@ -148,34 +156,40 @@ class RunTrackerViewModel: ObservableObject {
     func exitRun() {
         countdown = 3
         presentFullScreenCover = false
-        currentFullScreenCover = .countdown
     }
     
     func stopRun() {
-        Task {
-            await saveRun()
-        }
         resetRun()
         exitRun()
     }
     
-    func saveRun() async {
-        let newRun = Run(
+    func saveRunData() async {
+        let currentRun = Run(
             id: nil,
             createdAt: nil,
             distance: convertToMile(from: distance),
             elpasedTime: converToTimerFormat(from: elapsedTime),
-            pace: convertToPace(from: elapsedTime),
-            title: runTitle
-        )
+            pace: convertToPace(from: distance),
+            title: runTitle)
         
         do {
-            try await SupabaseManager.shared.client
-                .from("Runs")
-                .insert(newRun)
-                .execute()
+            try await dataService.saveRun(newRun: currentRun)
+            print("✅ Run saved successfully.")
         } catch {
             print("❌ Error saving run: \(error.localizedDescription)")
+        }
+    }
+    
+    func fetchRunData() async {
+        do {
+            let results = try await dataService.fetchRunData()
+            
+            await MainActor.run {
+                self.runs = results
+            }
+            print("✅ Run fetched successfully.")
+        } catch {
+            print("❌ Error fetching runs: \(error.localizedDescription)")
         }
     }
 }

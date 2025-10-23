@@ -9,15 +9,19 @@ import SwiftUI
 
 @main
 struct RunClubAppApp: App {
-    @StateObject private var locationService: LocationService
+    @StateObject private var locationService: MapKitManager
+    private var dataService: SupabaseManager
     @StateObject private var viewModel: RunTrackerViewModel
     
     //TODO: Add some comments to understand this
     init() {
-        let service = LocationService()
+        let mapManager = MapKitManager()
+        let data = SupabaseManager()
         
-        _locationService = StateObject(wrappedValue: service)
-        _viewModel = StateObject(wrappedValue: RunTrackerViewModel(locationService: service))
+        self.dataService = data
+        _locationService = StateObject(wrappedValue: mapManager)
+        
+        _viewModel = StateObject(wrappedValue: RunTrackerViewModel(locationService: mapManager, dataService: data))
     }
     
     var body: some Scene {

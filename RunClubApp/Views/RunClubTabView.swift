@@ -28,7 +28,7 @@ struct RunClubTabView: View {
 
 #Preview {
     RunClubTabView()
-        .environmentObject(RunTrackerViewModel(locationService: LocationService()))
+        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
 }
 
 extension RunClubTabView {

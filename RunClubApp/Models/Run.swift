@@ -8,7 +8,7 @@
 import Foundation
 
 struct Run: Codable {
-    let id: UUID?
+    let id: Int?
     let createdAt: Date?
     let distance: String
     let elpasedTime: String

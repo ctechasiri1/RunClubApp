@@ -22,5 +22,5 @@ struct CountdownView: View {
 
 #Preview {
     CountdownView()
-        .environmentObject(RunTrackerViewModel(locationService: LocationService()))
+        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
 }

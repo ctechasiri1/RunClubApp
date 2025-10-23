@@ -33,5 +33,5 @@ struct FullScreenCoverContainerView: View {
 
 #Preview {
     FullScreenCoverContainerView()
-        .environmentObject(RunTrackerViewModel(locationService: LocationService()))
+        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
 }
