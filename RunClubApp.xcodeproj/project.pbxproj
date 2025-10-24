@@ -50,11 +50,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		51A431182EAAFFB100BAC87A /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				5168FFD72EA8535C002276F0 /* Secrets.xcconfig */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		51A738FF2EA30C9E009CE990 = {
 			isa = PBXGroup;
 			children = (
 				51A7390A2EA30C9E009CE990 /* RunClubApp */,
 				51A739092EA30C9E009CE990 /* Products */,
+				51A431182EAAFFB100BAC87A /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,7 +172,6 @@
 /* Begin XCBuildConfiguration section */
 		51A739142EA30CA0009CE990 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5168FFD72EA8535C002276F0 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -227,7 +235,6 @@
 		};
 		51A739152EA30CA0009CE990 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5168FFD72EA8535C002276F0 /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -284,7 +291,6 @@
 		};
 		51A739172EA30CA0009CE990 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5168FFD72EA8535C002276F0 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -321,7 +327,6 @@
 		};
 		51A739182EA30CA0009CE990 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5168FFD72EA8535C002276F0 /* Secrets.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

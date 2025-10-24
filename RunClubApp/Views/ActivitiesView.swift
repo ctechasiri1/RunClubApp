@@ -11,14 +11,26 @@ struct ActivitiesView: View {
     @EnvironmentObject private var viewModel: RunTrackerViewModel
     
     var body: some View {
-        ScrollView {
-            ForEach(viewModel.runs, id: \.id) { run in
-                Text(run.title)
+        VStack {
+//            VStack {
+//                
+//            }
+//            
+            ScrollView {
+                ForEach(viewModel.runs, id: \.id) { run in
+                    VStack {
+                        HStack {
+                            Image(systemName: "person")
+                            Text(run.title)
+                        }
+                        
+                    }
+                }
             }
-        }
-        .onAppear {
-            Task {
-                await viewModel.fetchRunData()
+            .onAppear {
+                Task {
+                    await viewModel.fetchRunData()
+                }
             }
         }
     }

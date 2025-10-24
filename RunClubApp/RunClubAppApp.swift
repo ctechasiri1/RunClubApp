@@ -10,8 +10,9 @@ import SwiftUI
 @main
 struct RunClubAppApp: App {
     @StateObject private var locationService: MapKitManager
-    private var dataService: SupabaseManager
     @StateObject private var viewModel: RunTrackerViewModel
+    
+    private var dataService: SupabaseManager
     
     //TODO: Add some comments to understand this
     init() {
