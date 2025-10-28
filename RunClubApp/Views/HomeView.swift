@@ -9,7 +9,8 @@ import SwiftUI
 import MapKit
 
 struct HomeView: View {
-    @EnvironmentObject private var viewModel: RunTrackerViewModel
+    @ObservedObject var homeViewModel: HomeViewModel
+    @ObservedObject var liveRunViewModel: LiveRunViewModel
     
     var body: some View {
         NavigationStack {
@@ -21,9 +22,6 @@ struct HomeView: View {
                 }
                 .ignoresSafeArea()
             }
-            .fullScreenCover(isPresented: $viewModel.presentFullScreenCover, content: {
-                FullScreenCoverContainerView()
-            })
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     titleSection
@@ -35,8 +33,7 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
-        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
+    HomeView(homeViewModel: HomeViewModel(), liveRunViewModel: LiveRunViewModel())
 }
 
 extension HomeView {
@@ -49,23 +46,19 @@ extension HomeView {
             Image(systemName: "figure.run")
                 .foregroundStyle(.secondaryBackground)
         }
+        .frame(width: 160, height: 80, alignment: .center)
         .padding()
-        .frame(width: 180, height: 60, alignment: .leading)
-        .background(.white.opacity(0.8))
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .padding(.top, 40)
     }
     
     private var mapSection: some View {
-        Map(position: $viewModel.displayRegion) {
+        Map(position: $liveRunViewModel.displayRegion) {
             UserAnnotation()
         }
     }
     
     private var startButton: some View {
         Button {
-            viewModel.presentFullScreenCover = true
-            viewModel.currentFullScreenCover = .countdown
+            homeViewModel.startRunFlow()
         } label: {
             Text("Start")
                 .foregroundStyle(.white)

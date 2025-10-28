@@ -9,26 +9,10 @@ import SwiftUI
 
 @main
 struct RunClubAppApp: App {
-    @StateObject private var locationService: MapKitManager
-    @StateObject private var viewModel: RunTrackerViewModel
-    
-    private var dataService: SupabaseManager
-    
-    //TODO: Add some comments to understand this
-    init() {
-        let mapManager = MapKitManager()
-        let data = SupabaseManager()
-        
-        self.dataService = data
-        _locationService = StateObject(wrappedValue: mapManager)
-        
-        _viewModel = StateObject(wrappedValue: RunTrackerViewModel(locationService: mapManager, dataService: data))
-    }
-    
     var body: some Scene {
         WindowGroup {
+            // Just show the first view. That's it!
             RunClubTabView()
-                .environmentObject(viewModel)
         }
     }
 }

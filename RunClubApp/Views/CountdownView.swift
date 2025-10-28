@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct CountdownView: View {
-    @EnvironmentObject private var viewModel: RunTrackerViewModel
+    @StateObject private var viewModel = CountdownViewModel()
+    var onFinished: () -> Void
     
     var body: some View {
         Text("\(viewModel.countdown)")
@@ -19,11 +20,13 @@ struct CountdownView: View {
             .background(.primaryBackground)
             .onAppear {
                 viewModel.startCountdownTimer()
+                viewModel.onTimerFinished = onFinished
             }
     }
 }
 
 #Preview {
-    CountdownView()
-        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
+    CountdownView {
+        print("✅ Countdown finished in preview!")
+    }
 }

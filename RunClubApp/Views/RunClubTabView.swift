@@ -8,73 +8,41 @@
 import SwiftUI
 
 struct RunClubTabView: View {
-    @EnvironmentObject private var viewModel: RunTrackerViewModel
+    @StateObject private var countdownViewModel = CountdownViewModel()
+    @StateObject private var liveRunViewModel = LiveRunViewModel()
+    @StateObject private var homeViewModel = HomeViewModel()
     
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabView(selection: $viewModel.selectedTab) {
-                HomeView()
-                    .tag(Tab.home)
-                    .toolbarVisibility(.hidden, for: .tabBar)
+            TabView {
+                HomeView(homeViewModel: homeViewModel, liveRunViewModel: liveRunViewModel)
+                    .tabItem {
+                        Label("Home", systemImage: "house.fill")
+                    }
                 
                 ActivitiesView()
-                    .tag(Tab.activity)
-                    .toolbarVisibility(.hidden, for: .tabBar)
+                    .tabItem {
+                        Label("Activities", systemImage: "figure.run")
+                    }
             }
-            tabBar
+            .tint(.primaryBackground)
+        }
+        .fullScreenCover(item: $homeViewModel.activeScreenCover) { cover in
+            switch cover {
+            case .countdown:
+                CountdownView {
+                    liveRunViewModel.startWorkoutTimer()
+                    homeViewModel.transitionToWorkout()
+                }
+            case .workout:
+                WorkoutView(liveRunViewModel: liveRunViewModel, homeViewModel: homeViewModel)
+            case .pauseWorkout:
+                PauseWorkoutView(liveRunViewModel: liveRunViewModel, homeViewModel: homeViewModel)
+            }
         }
     }
 }
 
 #Preview {
     RunClubTabView()
-        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
-}
-
-extension RunClubTabView {
-    private func customTabBarItem(title: String, imageName: String, isActive: Bool) -> some View {
-        HStack(spacing: 10) {
-            Spacer()
-            
-            Image(systemName: imageName)
-                .resizable()
-                .foregroundStyle(isActive ? .white : .gray)
-                .frame(width: 20, height: 20)
-            
-            if isActive {
-                Text(title)
-                    .font(.system(size: 14))
-            }
-            
-            Spacer()
-        }
-        .foregroundStyle(.white)
-        .fontWeight(.heavy)
-        .frame(width: isActive ? 125 : 40, height: 60, alignment: .center)
-        .background(isActive ? .primaryBackground : .clear)
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-    }
-    
-    private var tabBar: some View {
-        ZStack {
-            HStack {
-                ForEach(Tab.allCases, id:\.self) { tab in
-                    Button {
-                        viewModel.selectedTab = tab
-                    } label: {
-                        customTabBarItem(
-                            title: tab.title,
-                            imageName: tab.iconName,
-                            isActive: viewModel.selectedTab == tab
-                        )
-                    }
-                }
-            }
-            .padding(6)
-        }
-        .frame(width: 200, height: 80)
-        .background(.white.opacity(0.8))
-        .clipShape(RoundedRectangle(cornerRadius: 20))
-        .padding(.horizontal, 26)
-    }
 }

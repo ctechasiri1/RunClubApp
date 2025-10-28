@@ -1,5 +1,5 @@
 //
-//  RunTrackerViewModel.swift
+//  LiveRunViewModel.swift
 //  RunClubApp
 //
 //  Created by Chiraphat Techasiri on 10/17/25.
@@ -10,44 +10,36 @@ import Combine
 import _MapKit_SwiftUI
 import Foundation
 
-class RunTrackerViewModel: ObservableObject {
-    /// for rendering the coorindates in map
+class LiveRunViewModel: ObservableObject {
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
-    
-    /// for the 'HomeView'
-    @Published var selectedTab: Tab = .home
-    @Published var presentFullScreenCover: Bool = false
-    @Published var currentFullScreenCover: FullScreenCoverState = .countdown
-    
-    /// for the 'CountdownView'
-    @Published var countdown: Int = 3
-    
-    /// for the 'WorkoutView'
     @Published var pace: String = "00:00"
-    @Published var distance: Double = 0.0
+    @Published var distance: Double = 0.0 {
+        didSet {
+            if distance > 0 {
+                let secondsPerMile = self.elapsedTime / (self.distance * self.mileMultipler)
+                
+                let minutes = Int(secondsPerMile / 60)
+                let seconds = Int(secondsPerMile) % 60
+                
+                self.pace = String(format: "%02d:%02d", minutes, seconds)
+            }
+        }
+    }
     @Published var elapsedTime: Double = 0.0
     @Published var workoutIsPaused: Bool = false
-    
-    /// for the 'PauseWorkoutView'
     @Published var runTitle: String = ""
     @Published var locationList: [CLLocationCoordinate2D] = []
     
-    /// for the "ActivitiesView'
-    @Published var runs: [Run] = []
-    
     private let mileMultipler = 0.000621371
     private let locationService: MapKitManager
-    private let dataService: SupabaseManager
+    private let dataManager: DataManager
     private var cancellables = Set<AnyCancellable>()
     private var timer: Timer?
     
-    init(locationService: MapKitManager, dataService: SupabaseManager) {
+    init(locationService: MapKitManager = MapKitManager(), dataManager: DataManager = SupabaseDataManager.shared) {
         self.locationService = locationService
-        self.dataService = dataService
+        self.dataManager = dataManager
         addSubscriber()
-        Task {
-            await fetchRunData()
-        }
     }
     
     //TODO: add some comments to understand this
@@ -99,33 +91,12 @@ class RunTrackerViewModel: ObservableObject {
         return formatter.string(from: seconds) ?? "00:00"
     }
     
-    func startCountdownTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true, block: { _ in
-            if self.countdown > 0 {
-                self.countdown -= 1
-            } else {
-                self.stopTimer()
-                self.pauseRun()
-                self.resetRun()
-                self.currentFullScreenCover = .workout
-            }
-        })
-    }
-    
     func startWorkoutTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
             if !self.workoutIsPaused {
                 self.elapsedTime += 0.1
             } else {
                 self.stopTimer()
-            }
-            if self.distance > 0 {
-                let secondsPerMile = self.elapsedTime / (self.distance * self.mileMultipler)
-                
-                let minutes = Int(secondsPerMile / 60)
-                let seconds = Int(secondsPerMile) % 60
-                
-                self.pace = String(format: "%02d:%02d", minutes, seconds)
             }
         })
     }
@@ -151,24 +122,7 @@ class RunTrackerViewModel: ObservableObject {
         elapsedTime = 0.0
         locationList = []
         locationService.resetRunData()
-    }
-    
-    func exitRun() {
-        countdown = 3
-        presentFullScreenCover = false
-    }
-    
-    func stopRun() async {
-        do {
-            try await saveRunData()
-            
-            await MainActor.run {
-                self.resetRun()
-                self.exitRun()
-            }
-        } catch {
-            print("❌ Error saving run: \(error.localizedDescription)")
-        }
+        runTitle = ""
     }
     
     func saveRunData() async throws {
@@ -181,21 +135,8 @@ class RunTrackerViewModel: ObservableObject {
             title: runTitle
         )
         
-        try await dataService.saveRun(added: currentRun)
+        try await dataManager.saveRun(added: currentRun)
         print("✅ Run saved successfully.")
-    }
-    
-    func fetchRunData() async {
-        do {
-            let results = try await dataService.fetchRunData()
-            
-            await MainActor.run {
-                self.runs = results
-            }
-            print("✅ Run fetched successfully.")
-        } catch {
-            print("❌ Error fetching runs: \(error.localizedDescription)")
-        }
     }
 }
 

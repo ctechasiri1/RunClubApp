@@ -8,14 +8,10 @@
 import SwiftUI
 
 struct ActivitiesView: View {
-    @EnvironmentObject private var viewModel: RunTrackerViewModel
+    @StateObject private var viewModel = ActivitiesViewModel()
     
     var body: some View {
         VStack {
-//            VStack {
-//                
-//            }
-//            
             ScrollView {
                 ForEach(viewModel.runs, id: \.id) { run in
                     VStack {
@@ -23,7 +19,6 @@ struct ActivitiesView: View {
                             Image(systemName: "person")
                             Text(run.title)
                         }
-                        
                     }
                 }
             }
@@ -38,5 +33,4 @@ struct ActivitiesView: View {
 
 #Preview {
     ActivitiesView()
-        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
 }

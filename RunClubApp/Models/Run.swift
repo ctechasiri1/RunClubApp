@@ -14,7 +14,6 @@ struct Run: Codable {
     let elpasedTime: String
     let pace: String
     let title: String
-//    let mapList: [String]
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -23,6 +22,5 @@ struct Run: Codable {
         case elpasedTime = "elapsed_time"
         case pace
         case title
-//        case mapList = "map_list"
     }
 }

@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct WorkoutView: View {
-    @EnvironmentObject private var viewModel: RunTrackerViewModel
+    @ObservedObject var liveRunViewModel: LiveRunViewModel
+    @ObservedObject var homeViewModel: HomeViewModel
     
     var body: some View {
         VStack {
@@ -40,21 +41,20 @@ struct WorkoutView: View {
             Spacer()
         }
         .onAppear {
-            viewModel.resumeRun()
-            viewModel.startWorkoutTimer()
+            liveRunViewModel.resumeRun()
+            liveRunViewModel.resetRun()
         }
     }
 }
 
 #Preview {
-    WorkoutView()
-        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
+    WorkoutView(liveRunViewModel: LiveRunViewModel(), homeViewModel: HomeViewModel())
 }
 
 extension WorkoutView {
     private var timeSection: some View {
         VStack {
-            Text(viewModel.converToTimerFormat(from: viewModel.elapsedTime))
+            Text(liveRunViewModel.converToTimerFormat(from: liveRunViewModel.elapsedTime))
                 .font(.system(size: 65, weight: .regular, design: .monospaced))
                 
             Text("TIME")
@@ -64,7 +64,7 @@ extension WorkoutView {
     
     private var distanceSection: some View {
         VStack {
-            Text(viewModel.convertToMile(from: viewModel.distance))
+            Text(liveRunViewModel.convertToMile(from: liveRunViewModel.distance))
                 .font(.system(size: 120, weight: .bold, design: .default))
             
             Text("MILES")
@@ -74,7 +74,7 @@ extension WorkoutView {
     
     private var avgPaceSection: some View {
         VStack {
-            Text(viewModel.pace)
+            Text(liveRunViewModel.pace)
                 .font(.system(size: 35, weight: .regular))
             
             Text("AVG PACE")
@@ -105,24 +105,23 @@ extension WorkoutView {
     
     private var pauseButton: some View {
         Button {
-            viewModel.currentFullScreenCover = .pauseworkout
-            viewModel.workoutIsPaused = true
-//            viewModel.stopTimer()
-            viewModel.pauseRun()
+            liveRunViewModel.pauseRun()
+            liveRunViewModel.workoutIsPaused = true
+            homeViewModel.activeScreenCover = .pauseWorkout
         } label: {
-            Image(systemName: viewModel.workoutIsPaused ? "play.fill" : "pause.fill")
+            Image(systemName: liveRunViewModel.workoutIsPaused ? "play.fill" : "pause.fill")
                 .font(.system(.largeTitle))
                 .padding(36)
                 .background(.primaryBackground)
                 .clipShape(Circle())
         }
-        .scaleEffect(viewModel.workoutIsPaused ? 1.0 : 0.9)
-        .animation(.bouncy, value: viewModel.workoutIsPaused)
+        .scaleEffect(liveRunViewModel.workoutIsPaused ? 1.0 : 0.9)
+        .animation(.bouncy, value: liveRunViewModel.workoutIsPaused)
     }
     
     private var resetButton: some View {
         Button {
-            viewModel.resetRun()
+            liveRunViewModel.resetRun()
         } label: {
             Image(systemName: "square.fill")
                 .font(.system(.title3))
@@ -134,8 +133,8 @@ extension WorkoutView {
     
     private var exitButton: some View {
         Button {
-            viewModel.exitRun()
-            viewModel.resetRun()
+            liveRunViewModel.resetRun()
+            homeViewModel.activeScreenCover = nil
         } label: {
             Image(systemName: "arrow.down.right.and.arrow.up.left")
                 .font(.system(.title3))

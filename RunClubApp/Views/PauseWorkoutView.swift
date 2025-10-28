@@ -9,7 +9,8 @@ import SwiftUI
 import _MapKit_SwiftUI
 
 struct PauseWorkoutView: View {
-    @EnvironmentObject private var viewModel: RunTrackerViewModel
+    @ObservedObject var liveRunViewModel: LiveRunViewModel
+    @ObservedObject var homeViewModel: HomeViewModel
     
     var body: some View {
         VStack {
@@ -76,14 +77,13 @@ struct PauseWorkoutView: View {
 }
 
 #Preview {
-    PauseWorkoutView()
-        .environmentObject(RunTrackerViewModel(locationService: MapKitManager(), dataService: SupabaseManager()))
+    PauseWorkoutView(liveRunViewModel: LiveRunViewModel(), homeViewModel: HomeViewModel())
 }
 
 extension PauseWorkoutView {
     private var cardTitle: some View {
         HStack {
-            TextField("Enter Title", text: $viewModel.runTitle)
+            TextField("Enter Title", text: $liveRunViewModel.runTitle)
                 .font(.system(.largeTitle, design: .default, weight: .bold))
                 .foregroundStyle(.secondaryBackground)
                 .padding([.top, .leading, .trailing])
@@ -93,7 +93,7 @@ extension PauseWorkoutView {
     
     private var mileMetric: some View {
         VStack {
-            Text(viewModel.convertToMile(from: viewModel.distance))
+            Text(liveRunViewModel.convertToMile(from: liveRunViewModel.distance))
                 .font(.system(.title, design: .default, weight: .bold))
                 .foregroundStyle(.primaryBackground)
             
@@ -105,7 +105,7 @@ extension PauseWorkoutView {
     
     private var timeMetric: some View {
         VStack {
-            Text(viewModel.converToTimerFormat(from: viewModel.elapsedTime))
+            Text(liveRunViewModel.converToTimerFormat(from: liveRunViewModel.elapsedTime))
                 .font(.system(.title2, design: .default, weight: .bold))
             
             Text("TIME")
@@ -116,7 +116,7 @@ extension PauseWorkoutView {
     
     private var paceMetric: some View {
         VStack {
-            Text(viewModel.pace)
+            Text(liveRunViewModel.pace)
                 .font(.system(.title2, design: .default, weight: .bold))
             
             Text("PACE")
@@ -186,8 +186,8 @@ extension PauseWorkoutView {
     }
     
     private var backgroundMap: some View {
-        Map(position: $viewModel.displayRegion) {
-            MapPolyline(coordinates: viewModel.locationList)
+        Map(position: $liveRunViewModel.displayRegion) {
+            MapPolyline(coordinates: liveRunViewModel.locationList)
                 .stroke(.primaryBackground, lineWidth: 5)
         }
         .ignoresSafeArea()
@@ -195,9 +195,9 @@ extension PauseWorkoutView {
     
     private var resumeButton: some View {
         Button {
-            viewModel.currentFullScreenCover = .workout
-            viewModel.resumeRun()
-            viewModel.workoutIsPaused = false
+            homeViewModel.activeScreenCover = .workout
+            liveRunViewModel.resumeRun()
+            liveRunViewModel.workoutIsPaused = false
         } label: {
             HStack {
                 Text("Resume")
@@ -214,7 +214,11 @@ extension PauseWorkoutView {
     private var finishButton: some View {
         Button {
             Task {
-                await viewModel.stopRun()
+                try await liveRunViewModel.saveRunData()
+                liveRunViewModel.workoutIsPaused = false
+                liveRunViewModel.stopTimer()
+                liveRunViewModel.resetRun()
+                homeViewModel.activeScreenCover = nil
             }
         } label: {
             HStack {
