@@ -13,32 +13,36 @@ struct RunClubTabView: View {
     @StateObject private var homeViewModel = HomeViewModel()
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            TabView {
-                HomeView(homeViewModel: homeViewModel, liveRunViewModel: liveRunViewModel)
-                    .tabItem {
-                        Label("Home", systemImage: "house.fill")
-                    }
-                
-                ActivitiesView()
-                    .tabItem {
-                        Label("Activities", systemImage: "figure.run")
-                    }
-            }
-            .tint(.primaryBackground)
-        }
-        .fullScreenCover(item: $homeViewModel.activeScreenCover) { cover in
-            switch cover {
-            case .countdown:
-                CountdownView {
-                    liveRunViewModel.startWorkoutTimer()
-                    homeViewModel.transitionToWorkout()
+        if SupabaseAuthManager.shared.currentSession != nil {
+            ZStack(alignment: .bottom) {
+                TabView {
+                    HomeView(homeViewModel: homeViewModel, liveRunViewModel: liveRunViewModel)
+                        .tabItem {
+                            Label("Home", systemImage: "house.fill")
+                        }
+                    
+                    ActivitiesView()
+                        .tabItem {
+                            Label("Activities", systemImage: "figure.run")
+                        }
                 }
-            case .workout:
-                WorkoutView(liveRunViewModel: liveRunViewModel, homeViewModel: homeViewModel)
-            case .pauseWorkout:
-                PauseWorkoutView(liveRunViewModel: liveRunViewModel, homeViewModel: homeViewModel)
+                .tint(.primaryBackground)
             }
+            .fullScreenCover(item: $homeViewModel.activeScreenCover) { cover in
+                switch cover {
+                case .countdown:
+                    CountdownView {
+                        liveRunViewModel.startWorkoutTimer()
+                        homeViewModel.transitionToWorkout()
+                    }
+                case .workout:
+                    WorkoutView(liveRunViewModel: liveRunViewModel, homeViewModel: homeViewModel)
+                case .pauseWorkout:
+                    PauseWorkoutView(liveRunViewModel: liveRunViewModel, homeViewModel: homeViewModel)
+                }
+            }
+        } else {
+            LoginView()
         }
     }
 }

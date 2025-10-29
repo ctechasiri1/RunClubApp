@@ -45,7 +45,9 @@ struct ActivitiesView: View {
             }
         }
         .task {
-            await viewModel.fetchRunData()
+            if let userID = SupabaseAuthManager.shared.currentSession?.user.id {
+                await viewModel.fetchRunData(for: userID)
+            }
             viewModel.fetchLocationData()
         }
     }

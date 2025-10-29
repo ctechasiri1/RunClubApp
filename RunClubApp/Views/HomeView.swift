@@ -26,6 +26,9 @@ struct HomeView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     titleSection
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    logoutButton
+                }
             }
             .toolbarBackground(.hidden, for: .navigationBar)
         }
@@ -69,5 +72,18 @@ extension HomeView {
         .clipShape(Circle())
         .padding(.bottom, 140)
         .shadow(color: .primaryBackground, radius: 10)
+    }
+    
+    private var logoutButton: some View {
+        Button {
+            Task {
+                try await SupabaseAuthManager.shared.logout()
+            }
+        } label: {
+            Text("Logout")
+                .foregroundStyle(.red)
+                .clipShape(Capsule())
+        }
+
     }
 }

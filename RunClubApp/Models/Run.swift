@@ -18,6 +18,7 @@ struct Run: Codable, Identifiable {
     let startLongitude: Double
     let endLatitude: Double
     let endLongitude: Double
+    let userID: UUID
     
     enum CodingKeys: String, CodingKey {
         case id, distance, pace, title
@@ -27,6 +28,6 @@ struct Run: Codable, Identifiable {
         case startLatitude = "start_latitude"
         case endLongitude = "end_longitude"
         case endLatitude = "end_latitude"
-        
+        case userID = "user_ID"
     }
 }

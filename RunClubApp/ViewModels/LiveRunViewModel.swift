@@ -47,7 +47,6 @@ class LiveRunViewModel: ObservableObject {
         self.locationService = locationService
         self.dataManager = dataManager
         addSubscriber()
-        Task { await requestAuthorization() }
     }
     
     //TODO: add some comments to understand this
@@ -134,7 +133,9 @@ class LiveRunViewModel: ObservableObject {
     }
     
     func saveRunData() async throws {
-        if let startLocation = locationList.first, let endLocation = locationList.last {
+        if let startLocation = locationList.first,
+            let endLocation = locationList.last,
+           let userID = await SupabaseAuthManager.shared.currentSession?.user.id {
             let currentRun = Run(
                 id: nil,
                 createdAt: nil,
@@ -145,7 +146,8 @@ class LiveRunViewModel: ObservableObject {
                 startLatitude: startLocation.latitude,
                 startLongitude: startLocation.longitude,
                 endLatitude: endLocation.latitude,
-                endLongitude: endLocation.longitude
+                endLongitude: endLocation.longitude,
+                userID: userID
             )
             try await dataManager.saveRun(added: currentRun)
         }

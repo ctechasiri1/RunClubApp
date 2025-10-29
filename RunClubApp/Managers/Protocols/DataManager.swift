@@ -9,5 +9,5 @@ import Foundation
 
 protocol DataManager {
     func saveRun(added: Run) async throws
-    func fetchRunData() async throws -> [Run]
+    func fetchRunData(for userID: UUID) async throws -> [Run]
 }

@@ -20,10 +20,10 @@ class ActivitiesViewModel: ObservableObject {
         self.dataManager = dataManager
     }
     
-    func fetchRunData() async {
+    func fetchRunData(for userID: UUID) async {
         self.isLoading = true
         do {
-            self.runs = try await dataManager.fetchRunData()
+            self.runs = try await dataManager.fetchRunData(for: userID)
             self.isLoading = false
             print("✅ Run fetched successfully.")
         } catch {

@@ -28,10 +28,11 @@ final class SupabaseDataManager: DataManager {
             .execute()
     }
     
-    func fetchRunData() async throws -> [Run] {
+    func fetchRunData(for userID: UUID) async throws -> [Run] {
         try await client
             .from("Runs")
             .select()
+            .in("user_ID", values: [userID])
             .execute()
             .value
     }
