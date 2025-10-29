@@ -8,44 +8,18 @@
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject private var viewModel = LoginViewModel()
+    @ObservedObject var viewModel: LoginViewModel
     
     var body: some View {
         VStack {
-            Image("Icon")
-                .resizable()
-                .frame(height: UIScreen.main.bounds.height / 2)
-                .scaledToFit()
+            logoSection
             
             VStack(spacing: 20) {
-                Text("Welcome to the Club")
-                    .font(.system(.title, weight: .bold))
-                    .foregroundStyle(.secondaryBackground)
+                loginTitle
                 
-                TextField("Enter Email Here", text: $viewModel.email)
-                    .padding()
-                    .background(.ultraThickMaterial)
-                    .clipShape(Capsule())
-                    .padding()
+                loginEmailInput
                 
-                Button {
-                    print("Magic link login action working")
-                    viewModel.loginAction()
-                } label: {
-                    Text("Login")
-                        .foregroundStyle(.primaryBackground)
-                        .font(.system(.title2, weight: .bold))
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.white)
-                        .clipShape(Capsule())
-                        .padding()
-                }
-                .disabled(viewModel.email.count < 7)
-                .onOpenURL { url in
-                    print("Handle magic link being triggered")
-                    viewModel.handleMagicLink(url: url)
-                }
+                loginButon
             }
             .frame(height: 300)
             .frame(maxWidth: .infinity)
@@ -60,5 +34,49 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    LoginView(viewModel: LoginViewModel())
+}
+
+extension LoginView {
+    private var logoSection: some View {
+        Image("Icon")
+            .resizable()
+            .frame(height: UIScreen.main.bounds.height / 2)
+            .scaledToFit()
+    }
+    
+    private var loginTitle: some View {
+        Text("Welcome to the Club")
+            .font(.system(.title, weight: .bold))
+            .foregroundStyle(.secondaryBackground)
+    }
+    
+    private var loginEmailInput: some View {
+        TextField("Enter Email Here", text: $viewModel.email)
+            .padding()
+            .background(.ultraThickMaterial)
+            .clipShape(Capsule())
+            .padding()
+    }
+    
+    private var loginButon: some View {
+        Button {
+            print("Magic link login action working")
+            viewModel.loginAction()
+        } label: {
+            Text("Login")
+                .foregroundStyle(.primaryBackground)
+                .font(.system(.title2, weight: .bold))
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(.white)
+                .clipShape(Capsule())
+                .padding()
+        }
+        .disabled(viewModel.email.count < 7)
+        .onOpenURL { url in
+            print("Handle magic link being triggered")
+            viewModel.handleMagicLink(url: url)
+        }
+    }
 }

@@ -11,9 +11,10 @@ struct RunClubTabView: View {
     @StateObject private var countdownViewModel = CountdownViewModel()
     @StateObject private var liveRunViewModel = LiveRunViewModel()
     @StateObject private var homeViewModel = HomeViewModel()
+    @StateObject private var loginViewModel = LoginViewModel()
     
     var body: some View {
-        if SupabaseAuthManager.shared.currentSession != nil {
+        if loginViewModel.validSession {
             ZStack(alignment: .bottom) {
                 TabView {
                     HomeView(homeViewModel: homeViewModel, liveRunViewModel: liveRunViewModel)
@@ -42,7 +43,7 @@ struct RunClubTabView: View {
                 }
             }
         } else {
-            LoginView()
+            LoginView(viewModel: loginViewModel)
         }
     }
 }

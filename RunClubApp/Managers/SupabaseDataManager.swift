@@ -21,6 +21,7 @@ final class SupabaseDataManager: DataManager {
         self.client = SupabaseClient(supabaseURL: url, supabaseKey: apiKey)
     }
     
+    /// this saves the Run object data to Supabase
     func saveRun(added: Run) async throws {
         try await client
             .from("Runs")
@@ -28,6 +29,7 @@ final class SupabaseDataManager: DataManager {
             .execute()
     }
     
+    /// this fetches a list of Run objects based on the userID of the user that logins in
     func fetchRunData(for userID: UUID) async throws -> [Run] {
         try await client
             .from("Runs")
