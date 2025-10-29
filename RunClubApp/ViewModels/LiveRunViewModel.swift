@@ -9,6 +9,7 @@ import AudioToolbox
 import Combine
 import _MapKit_SwiftUI
 import Foundation
+import HealthKit
 
 class LiveRunViewModel: ObservableObject {
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
@@ -30,9 +31,15 @@ class LiveRunViewModel: ObservableObject {
     @Published var runTitle: String = ""
     @Published var locationList: [CLLocationCoordinate2D] = []
     
+    @Published var flightCount: Double = 0
+    @Published var heartRate: Double = 0
+    @Published var activeEnergy: Double = 0
+    @Published var errorMessage: String?
+    
     private let mileMultipler = 0.000621371
     private let locationService: MapKitManager
     private let dataManager: DataManager
+    private var isAuthorized: Bool = false
     private var cancellables = Set<AnyCancellable>()
     private var timer: Timer?
     
@@ -40,6 +47,7 @@ class LiveRunViewModel: ObservableObject {
         self.locationService = locationService
         self.dataManager = dataManager
         addSubscriber()
+        Task { await requestAuthorization() }
     }
     
     //TODO: add some comments to understand this
@@ -126,16 +134,22 @@ class LiveRunViewModel: ObservableObject {
     }
     
     func saveRunData() async throws {
-        let currentRun = Run(
-            id: nil,
-            createdAt: nil,
-            distance: convertToMile(from: distance),
-            elpasedTime: converToTimerFormat(from: elapsedTime),
-            pace: convertToPace(from: distance),
-            title: runTitle
-        )
-        
-        try await dataManager.saveRun(added: currentRun)
+        if let startLocation = locationList.first, let endLocation = locationList.last {
+            let currentRun = Run(
+                id: nil,
+                createdAt: nil,
+                distance: convertToMile(from: distance),
+                elpasedTime: converToTimerFormat(from: elapsedTime),
+                pace: convertToPace(from: distance),
+                title: runTitle,
+                startLatitude: startLocation.latitude,
+                startLongitude: startLocation.longitude,
+                endLatitude: endLocation.latitude,
+                endLongitude: endLocation.longitude
+            )
+            try await dataManager.saveRun(added: currentRun)
+        }
+
         print("✅ Run saved successfully.")
     }
 }

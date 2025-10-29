@@ -7,20 +7,26 @@
 
 import Foundation
 
-struct Run: Codable {
+struct Run: Codable, Identifiable {
     let id: Int?
     let createdAt: Date?
     let distance: String
     let elpasedTime: String
     let pace: String
     let title: String
+    let startLatitude: Double
+    let startLongitude: Double
+    let endLatitude: Double
+    let endLongitude: Double
     
     enum CodingKeys: String, CodingKey {
-        case id
+        case id, distance, pace, title
         case createdAt = "created_at"
-        case distance
         case elpasedTime = "elapsed_time"
-        case pace
-        case title
+        case startLongitude = "start_longitude"
+        case startLatitude = "start_latitude"
+        case endLongitude = "end_longitude"
+        case endLatitude = "end_latitude"
+        
     }
 }

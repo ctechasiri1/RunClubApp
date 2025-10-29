@@ -139,7 +139,7 @@ extension PauseWorkoutView {
             
             Spacer()
             
-            Text("159")
+            Text(String(format: "%.1f", liveRunViewModel.heartRate))
                 .font(.system(.title3, design: .default, weight: .bold))
             
             Text("BPM")
@@ -196,7 +196,6 @@ extension PauseWorkoutView {
     private var resumeButton: some View {
         Button {
             homeViewModel.activeScreenCover = .workout
-            liveRunViewModel.resumeRun()
             liveRunViewModel.workoutIsPaused = false
         } label: {
             HStack {

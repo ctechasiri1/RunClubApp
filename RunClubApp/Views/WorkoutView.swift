@@ -42,7 +42,6 @@ struct WorkoutView: View {
         }
         .onAppear {
             liveRunViewModel.resumeRun()
-            liveRunViewModel.resetRun()
         }
     }
 }
