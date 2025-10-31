@@ -1,4 +1,4 @@
-RunClubApp (work in progress)
+RunClubApp
 ==========
 
 **RunClubApp** is a mobile application designed to organize, track, and motivate running groups and individual runners. It aims to foster a **community spirit** while providing essential, data-driven tools for training and progress monitoring.
