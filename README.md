@@ -5,9 +5,10 @@ RunClubApp
 
 This project demonstrates proficiency in building a **location-aware**, data-intensive application for a dedicated fitness niche, highlighting competence in **SwiftUI**, **Core Location**, and **Supabase** for data persistence.
 
-<img width="250" alt="Simulator Screenshot - iPhone 16 Pro - 2025-10-21 at 20 34 29" src="https://github.com/user-attachments/assets/2deb2358-920e-4f36-aaac-9d3d1ac895d0" />
-<img width="250" alt="Simulator Screenshot - iPhone 16 Pro - 2025-10-21 at 20 34 53" src="https://github.com/user-attachments/assets/9a6e9615-d97e-4ada-9987-36c96741be18" />
-<img width="250" alt="Simulator Screenshot - iPhone 16 Pro - 2025-10-21 at 20 35 02" src="https://github.com/user-attachments/assets/0dbfcc71-86ed-4d7d-9257-dee7d06f0590" />
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2025-10-30 at 21 50 21" src="https://github.com/user-attachments/assets/c7ef11cf-7581-40de-a6ec-4119257eee92" />
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2025-10-30 at 21 50 12" src="https://github.com/user-attachments/assets/4aae139e-f81d-4dd4-a377-33fcac853746" />
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2025-10-30 at 21 50 05" src="https://github.com/user-attachments/assets/4b9877f8-2898-418f-848c-e351ef6cb14f" />
+<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2025-10-30 at 21 50 28" src="https://github.com/user-attachments/assets/6ad193c4-934d-4665-97f5-8abad11e93fd" />
 
 ✨ Features
 ----------
