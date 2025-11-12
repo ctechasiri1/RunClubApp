@@ -15,15 +15,15 @@ struct WorkoutView: View {
         VStack {
             Spacer()
             
-            timeSection
+            TimeSection(liveRunViewModel: liveRunViewModel)
                 .padding(.bottom, 10)
             
-            distanceSection
+            DistanceSection(liveRunViewModel: liveRunViewModel)
             
             Spacer()
             
             HStack(spacing: 30) {
-                avgPaceSection
+                AvgPaceSection(liveRunViewModel: liveRunViewModel)
                 heartRateSection
             }
             .padding(.bottom, 80)
@@ -50,8 +50,11 @@ struct WorkoutView: View {
     WorkoutView(liveRunViewModel: LiveRunViewModel(), homeViewModel: HomeViewModel())
 }
 
-extension WorkoutView {
-    private var timeSection: some View {
+// MARK:
+private struct TimeSection: View {
+    @ObservedObject var liveRunViewModel: LiveRunViewModel
+    
+    var body: some View {
         VStack {
             Text(liveRunViewModel.converToTimerFormat(from: liveRunViewModel.elapsedTime))
                 .font(.system(size: 65, weight: .regular, design: .monospaced))
@@ -60,8 +63,13 @@ extension WorkoutView {
                 .foregroundStyle(.gray)
         }
     }
+}
+
+// MARK:
+private struct DistanceSection: View {
+    @ObservedObject var liveRunViewModel: LiveRunViewModel
     
-    private var distanceSection: some View {
+    var body: some View {
         VStack {
             Text(liveRunViewModel.convertToMile(from: liveRunViewModel.distance))
                 .font(.system(size: 120, weight: .bold, design: .default))
@@ -70,8 +78,12 @@ extension WorkoutView {
                 .foregroundStyle(.gray)
         }
     }
+}
+
+private struct AvgPaceSection: View {
+    @ObservedObject var liveRunViewModel: LiveRunViewModel
     
-    private var avgPaceSection: some View {
+    var body: some View {
         VStack {
             Text(liveRunViewModel.pace)
                 .font(.system(size: 35, weight: .regular))
@@ -80,6 +92,20 @@ extension WorkoutView {
                 .foregroundStyle(.gray)
         }
     }
+}
+
+extension WorkoutView {
+//    private var timeSection: some View {
+//
+//    }
+    
+//    private var distanceSection: some View {
+//
+//    }
+    
+//    private var avgPaceSection: some View {
+//
+//    }
     
     private var heartRateSection: some View {
         VStack {
