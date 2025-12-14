@@ -50,6 +50,7 @@ class MapKitManager: NSObject, ObservableObject {
     func resetRunData() {
         startLocation = nil
         lastLocation = nil
+        locationList = []
         distanceCovered = 0.0
     }
 }

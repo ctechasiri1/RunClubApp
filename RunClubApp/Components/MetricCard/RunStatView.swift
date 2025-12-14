@@ -14,7 +14,7 @@ struct RunStatView: View {
     var body: some View {
         VStack {
             Text(stat)
-                .font(.system(.title, design: .default, weight: .bold))
+                .font(.system(.title2, design: .default, weight: .bold))
                 .foregroundStyle(.primaryBackground)
             
             Text(statTitle)

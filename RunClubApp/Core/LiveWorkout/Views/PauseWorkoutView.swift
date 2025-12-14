@@ -24,7 +24,7 @@ struct PauseWorkoutView: View {
                 Divider()
                     .frame(width: 350)
                 
-                CardRunStats(distance: liveRunViewModel.distance.convertToMile(), time: liveRunViewModel.elapsedTime.converToTimerFormat(), pace: liveRunViewModel.pace)
+                CardRunStats(distance: liveRunViewModel.distance.convertToMile(), time: liveRunViewModel.elapsedTime.converToTimerFormatPauseWorkout(), pace: liveRunViewModel.pace)
                 
                 CardTechnicalStats(heartRate: "N/A", caloriesBurned: "N/A", elevationGain: liveRunViewModel.elevation.convertToFeet())
             }
@@ -57,7 +57,6 @@ struct PauseWorkoutView: View {
     PauseWorkoutView(liveRunViewModel: LiveRunViewModel(), homeViewModel: HomeViewModel())
 }
 
-/// need to fix this so that it look like the one on the activities page
 private struct BackgroundMap: View {
     @Binding var startPosition: MapCameraPosition
     let coordinates: [CLLocationCoordinate2D]

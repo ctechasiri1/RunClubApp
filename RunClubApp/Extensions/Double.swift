@@ -15,14 +15,31 @@ extension Double {
     }
     
     /// this converts 'elpasedTime' (recorded in seconds) to the foramtted time
-    func converToTimerFormat() -> String {
+    func converToTimerFormatWorkout() -> String {
         let formatter = DateComponentsFormatter()
         
         formatter.allowedUnits = [.hour, .minute, .second]
+        
         formatter.unitsStyle = .positional
         formatter.zeroFormattingBehavior = .pad
         
         return formatter.string(from: self) ?? "00:00:00"
+    }
+    
+    /// this converts 'elpasedTime' (recorded in seconds) to the foramtted time
+    func converToTimerFormatPauseWorkout() -> String {
+        let formatter = DateComponentsFormatter()
+        
+        if self >= 3600 {
+            formatter.allowedUnits = [.hour, .minute, .second]
+        } else {
+            formatter.allowedUnits = [.minute, .second]
+        }
+        
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        
+        return formatter.string(from: self) ?? "00:00"
     }
     
     /// this converts 'pace' (recorded in seconds) to the formatted time

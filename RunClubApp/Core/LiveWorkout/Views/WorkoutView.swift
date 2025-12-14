@@ -15,7 +15,7 @@ struct WorkoutView: View {
         VStack {
             Spacer()
             
-            TimeSection(time: liveRunViewModel.elapsedTime.converToTimerFormat())
+            TimeSection(time: liveRunViewModel.elapsedTime.converToTimerFormatWorkout())
                 .padding(.bottom, 10)
             
             DistanceSection(distance: liveRunViewModel.distance.convertToMile())
@@ -53,8 +53,12 @@ struct WorkoutView: View {
             Spacer()
         }
         .onAppear {
-            liveRunViewModel.resetRun()
-            liveRunViewModel.resumeRun()
+            if !liveRunViewModel.workoutStarted {
+                liveRunViewModel.resetRun()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                liveRunViewModel.resumeRun()
+            })
         }
     }
 }

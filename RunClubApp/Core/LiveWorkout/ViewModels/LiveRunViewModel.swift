@@ -82,7 +82,9 @@ class LiveRunViewModel: ObservableObject {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
             if !self.workoutIsPaused && self.workoutStarted {
                 self.elapsedTime += 0.1
-            } else {
+            }
+            
+            if self.workoutIsPaused {
                 self.stopTimer()
             }
         })
@@ -124,7 +126,7 @@ class LiveRunViewModel: ObservableObject {
                 title: runTitle,
                 createdAt: nil,
                 distance: distance.convertToMile(),
-                elpasedTime: elapsedTime.converToTimerFormat(),
+                elpasedTime: elapsedTime.converToTimerFormatWorkout(),
                 pace: distance.convertToPace(),
                 elevationGain: elevationGained,
                 coordinates: codableCoordinates,
