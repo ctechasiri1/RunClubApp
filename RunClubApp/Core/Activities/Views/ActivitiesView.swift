@@ -31,7 +31,7 @@ struct ActivitiesView: View {
                                 CardMap(startCoordinate: start, endCoordinate: end, coordinates: coordinates)
                             }
                             
-                            CardStats(time: run.elpasedTime, pace: run.pace, elevation: run.elevationGain.convertToFeet())
+                            CardStats(time: run.elpasedTime, pace: run.pace, distance: run.distance)
                         }
                     }
                 }
@@ -82,7 +82,10 @@ private struct CardMap: View {
     var body: some View {
         Map {
             Marker("Start", coordinate: startCoordinate)
-            Marker("End", coordinate: endCoordinate)
+                .tint(.primaryBackground)
+            
+            Marker("Finish", coordinate: endCoordinate)
+                .tint(.primaryBackground)
                 
             MapPolyline(coordinates: coordinates)
                 .stroke(.primaryBackground, lineWidth: 5)
@@ -96,7 +99,7 @@ private struct CardMap: View {
 private struct CardStats: View {
     let time: String
     let pace: String
-    let elevation: String
+    let distance: String
     
     var body: some View {
         HStack(spacing: 50) {
@@ -120,10 +123,10 @@ private struct CardStats: View {
             }
             
             VStack {
-                Text("ELEV. (FT)")
+                Text("DISTANCE")
                     .font(.system(.subheadline))
                     .foregroundStyle(.gray)
-                Text(elevation)
+                Text(distance)
                     .font(.system(.headline))
             }
         }

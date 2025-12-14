@@ -1,5 +1,5 @@
 //
-//  PauseWorkoutButton.swift
+//  RectangleButton.swift
 //  RunClubApp
 //
 //  Created by Chiraphat Techasiri on 12/14/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PauseWorkoutButton: View {
+struct RectangleButton: View {
     let buttonName: String
     let imageName: String
     let buttonAction: () -> Void
@@ -30,5 +30,5 @@ struct PauseWorkoutButton: View {
 }
 
 #Preview {
-    PauseWorkoutButton(buttonName: "Resume", imageName: "play.fill", buttonAction: {})
+    RectangleButton(buttonName: "Resume", imageName: "play.fill", buttonAction: {})
 }

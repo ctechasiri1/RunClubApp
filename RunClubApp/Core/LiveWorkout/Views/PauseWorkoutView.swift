@@ -14,7 +14,7 @@ struct PauseWorkoutView: View {
     
     var body: some View {
         VStack {
-            BackgroundMap(startPosition: $liveRunViewModel.displayRegion, coordinate: liveRunViewModel.locationList)
+            BackgroundMap(startPosition: $liveRunViewModel.displayRegion, coordinates: liveRunViewModel.locationList)
             
             Spacer()
             
@@ -33,12 +33,12 @@ struct PauseWorkoutView: View {
             .offset(y: -60)
             
             HStack(spacing: 20) {
-                PauseWorkoutButton(buttonName: "Resume", imageName: "play.fill") {
+                RectangleButton(buttonName: "Resume", imageName: "play.fill") {
                     homeViewModel.activeScreenCover = .workout
                     liveRunViewModel.workoutIsPaused = false
                 }
 
-                PauseWorkoutButton(buttonName: "Finish", imageName: "square.circle") {
+                RectangleButton(buttonName: "Finish", imageName: "square.circle") {
                     Task {
                         try await liveRunViewModel.saveRunData()
                         liveRunViewModel.workoutIsPaused = false
@@ -60,11 +60,20 @@ struct PauseWorkoutView: View {
 /// need to fix this so that it look like the one on the activities page
 private struct BackgroundMap: View {
     @Binding var startPosition: MapCameraPosition
-    let coordinate: [CLLocationCoordinate2D]
+    let coordinates: [CLLocationCoordinate2D]
     
     var body: some View {
         Map(position: $startPosition) {
-            MapPolyline(coordinates: coordinate)
+            if let startCoordinate = coordinates.first,
+               let endCoordinate = coordinates.last {
+                Marker("Start", coordinate: startCoordinate)
+                    .tint(.primaryBackground)
+                
+                Marker("Finish", coordinate: endCoordinate)
+                    .tint(.primaryBackground)
+            }
+
+            MapPolyline(coordinates: coordinates)
                 .stroke(.primaryBackground, lineWidth: 5)
         }
         .ignoresSafeArea()
@@ -99,12 +108,12 @@ private struct CardRunStats: View {
             Divider()
                 .frame(height: 30)
             
-            RunStatView(stat: time, statTitle: "MILES")
+            RunStatView(stat: time, statTitle: "TIME")
             
             Divider()
                 .frame(height: 30)
             
-            RunStatView(stat: pace, statTitle: "MILES")
+            RunStatView(stat: pace, statTitle: "PACE")
         }
         .padding([.leading, .trailing, .top])
     }

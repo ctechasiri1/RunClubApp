@@ -1,5 +1,5 @@
 //
-//  SmallWorkoutButton.swift
+//  SmallCircleButton.swift
 //  RunClubApp
 //
 //  Created by Chiraphat Techasiri on 12/14/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SmallWorkoutButton: View {
+struct SmallCircleButton: View {
     let buttonImage: String
     let buttonAction: () -> Void
     
@@ -25,5 +25,5 @@ struct SmallWorkoutButton: View {
 }
 
 #Preview {
-    SmallWorkoutButton(buttonImage: "arrow.down.right.and.arrow.up.left", buttonAction: { })
+    SmallCircleButton(buttonImage: "arrow.down.right.and.arrow.up.left", buttonAction: { })
 }

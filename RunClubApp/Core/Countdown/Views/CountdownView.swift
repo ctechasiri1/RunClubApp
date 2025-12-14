@@ -22,7 +22,6 @@ struct CountdownView: View {
             .background(.primaryBackground)
             .onAppear {
                 countdownViewModel.startCountdownTimer()
-                liveRunViewModel.resetRun()
                 countdownViewModel.onTimerFinished = onFinished
             }
     }

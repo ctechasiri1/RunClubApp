@@ -30,13 +30,18 @@ struct WorkoutView: View {
             .frame(maxWidth: .infinity, alignment: .center)
 
             HStack(spacing: 20) {
-                SmallWorkoutButton(buttonImage: "square.fill") {
+                SmallCircleButton(buttonImage: "square.fill") {
                     liveRunViewModel.resetRun()
+                    liveRunViewModel.resumeRun()
                 }
                 
-                PauseButton(liveRunViewModel: liveRunViewModel, homeViewModel: homeViewModel)
+                LargeCircleButton(workoutIsPaused: liveRunViewModel.workoutIsPaused) {
+                    liveRunViewModel.pauseRun()
+                    liveRunViewModel.workoutIsPaused = true
+                    homeViewModel.activeScreenCover = .pauseWorkout
+                }
                 
-                SmallWorkoutButton(buttonImage: "arrow.down.right.and.arrow.up.left") {
+                SmallCircleButton(buttonImage: "arrow.down.right.and.arrow.up.left") {
                     liveRunViewModel.resetRun()
                     homeViewModel.activeScreenCover = nil
                 }
@@ -48,6 +53,7 @@ struct WorkoutView: View {
             Spacer()
         }
         .onAppear {
+            liveRunViewModel.resetRun()
             liveRunViewModel.resumeRun()
         }
     }
@@ -121,26 +127,3 @@ private struct HeartRateSection: View {
         }
     }
 }
-
-private struct PauseButton: View {
-    @ObservedObject var liveRunViewModel: LiveRunViewModel
-    @ObservedObject var homeViewModel: HomeViewModel
-    
-    var body: some View {
-        Button {
-            liveRunViewModel.pauseRun()
-            liveRunViewModel.workoutIsPaused = true
-            homeViewModel.activeScreenCover = .pauseWorkout
-        } label: {
-            Image(systemName: liveRunViewModel.workoutIsPaused ? "play.fill" : "pause.fill")
-                .font(.system(.largeTitle))
-                .padding(36)
-                .background(.primaryBackground)
-                .clipShape(Circle())
-        }
-        .scaleEffect(liveRunViewModel.workoutIsPaused ? 1.0 : 0.9)
-        .animation(.bouncy, value: liveRunViewModel.workoutIsPaused)
-    }
-}
-
-

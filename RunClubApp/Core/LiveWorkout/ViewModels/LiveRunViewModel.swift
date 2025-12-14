@@ -26,6 +26,7 @@ class LiveRunViewModel: ObservableObject {
     
     @Published var errorMessage: String?
     @Published var workoutIsPaused: Bool = false
+    @Published var workoutStarted: Bool = false
     
     private let locationService: MapKitManager
     private let dataManager: DataManager
@@ -79,7 +80,7 @@ class LiveRunViewModel: ObservableObject {
     
     func startWorkoutTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
-            if !self.workoutIsPaused {
+            if !self.workoutIsPaused && self.workoutStarted {
                 self.elapsedTime += 0.1
             } else {
                 self.stopTimer()
@@ -93,18 +94,20 @@ class LiveRunViewModel: ObservableObject {
     }
     
     func resumeRun() {
+        workoutStarted = true
         startWorkoutTimer()
         locationService.startUpdatingLocation()
     }
     
     func pauseRun() {
-        stopTimer()
         locationService.stopUpdatingLocation()
         locationService.invalidateLastLocation()
         AudioServicesPlayAlertSoundWithCompletion(SystemSoundID(kSystemSoundID_Vibrate)) { }
     }
     
     func resetRun() {
+        stopTimer()
+        workoutStarted = false
         elapsedTime = 0.0
         locationList = []
         locationService.resetRunData()
