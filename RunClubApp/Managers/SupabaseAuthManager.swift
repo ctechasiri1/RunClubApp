@@ -12,9 +12,9 @@ import Supabase
 
 @MainActor
 final class SupabaseAuthManager: ObservableObject {
-    static let shared = SupabaseAuthManager()
-    
     @Published var currentSession: Session?
+    
+    static let shared = SupabaseAuthManager()
     
     private let client: SupabaseClient
     private let apiKey = "\(Secrets.$apiKey)"

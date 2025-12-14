@@ -11,7 +11,6 @@ import SwiftUI
 struct RunClubAppApp: App {
     var body: some Scene {
         WindowGroup {
-            // Just show the first view. That's it!
             RunClubTabView()
         }
     }

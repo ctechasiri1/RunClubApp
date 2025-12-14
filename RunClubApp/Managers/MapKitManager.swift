@@ -9,13 +9,11 @@ import CoreLocation
 import _MapKit_SwiftUI
 import Foundation
 
-//TODO: Add some comments to undestand this
 class MapKitManager: NSObject, ObservableObject {
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
     @Published var locationList: [CLLocationCoordinate2D] = []
     @Published var distanceCovered: Double = 0.0
     
-    /// Using this to generate/render the map based on the user location
     private let locationManager = CLLocationManager()
     private let mapZoom = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
 
@@ -58,24 +56,28 @@ class MapKitManager: NSObject, ObservableObject {
 // MARK: handles user pop-up to allow location tracking and updates user location
 extension MapKitManager: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        /// grabs the latest location
         guard let newLocation = locations.last else { return }
         
+        /// calculates the new distance from the last distance
         if let lastLocation = self.lastLocation {
-            if let distanceIncrement = startLocation?.distance(from: lastLocation) {
-                distanceCovered += distanceIncrement
-            }
+            let distanceIncrement = lastLocation.distance(from: newLocation)
+            distanceCovered += distanceIncrement
         }
         
+        /// updates the map  to the new location
         mapRegion = newLocation.coordinate
         
         updateDisplayRegion()
         
+        /// if there is a new coordinate generated add it to the locationList
         if startLocation == nil {
             startLocation = newLocation
             locationList.append(newLocation.coordinate)
             return
         }
         
+        /// update the last location to the new location and append it to the locationList
         lastLocation = newLocation
         locationList.append(newLocation.coordinate)
     }

@@ -1,0 +1,38 @@
+//
+//  Double.swift
+//  RunClubApp
+//
+//  Created by Chiraphat Techasiri on 12/13/25.
+//
+
+import Foundation
+
+extension Double {
+    /// this converts 'distance' (recorded in meters) to the formatted miles
+    func convertToMile() -> String {
+        let distanceInMile = (self * Constants.mileMultiplier)
+        return String(format: "%.2f", distanceInMile)
+    }
+    
+    /// this converts 'elpasedTime' (recorded in seconds) to the foramtted time
+    func converToTimerFormat() -> String {
+        let formatter = DateComponentsFormatter()
+        
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        
+        return formatter.string(from: self) ?? "00:00:00"
+    }
+    
+    /// this converts 'pace' (recorded in seconds) to the formatted time
+    func convertToPace() -> String {
+        let formatter = DateComponentsFormatter()
+        
+        formatter.allowedUnits = [.minute, .second]
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        
+        return formatter.string(from: self) ?? "00:00"
+    }
+}
