@@ -35,4 +35,12 @@ extension Double {
         
         return formatter.string(from: self) ?? "00:00"
     }
+    
+    func convertToFeet() -> String {
+        let distance = Measurement(value: self, unit: UnitLength.meters)
+        let distanceInFeet = distance.converted(to: .feet)
+        let resultString = distanceInFeet.value.formatted()
+        
+        return resultString
+    }
 }

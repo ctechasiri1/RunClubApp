@@ -13,6 +13,7 @@ class MapKitManager: NSObject, ObservableObject {
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
     @Published var locationList: [CLLocationCoordinate2D] = []
     @Published var distanceCovered: Double = 0.0
+    @Published var elevationGained: Double = 0.0
     
     private let locationManager = CLLocationManager()
     private let mapZoom = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
@@ -63,6 +64,9 @@ extension MapKitManager: CLLocationManagerDelegate {
         if let lastLocation = self.lastLocation {
             let distanceIncrement = lastLocation.distance(from: newLocation)
             distanceCovered += distanceIncrement
+            
+            let elevationGain = newLocation.altitude - lastLocation.altitude
+            elevationGained += elevationGain
         }
         
         /// updates the map  to the new location

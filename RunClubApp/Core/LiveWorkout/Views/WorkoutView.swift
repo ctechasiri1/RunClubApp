@@ -15,24 +15,31 @@ struct WorkoutView: View {
         VStack {
             Spacer()
             
-            TimeSection(liveRunViewModel: liveRunViewModel)
+            TimeSection(time: liveRunViewModel.elapsedTime.converToTimerFormat())
                 .padding(.bottom, 10)
             
-            DistanceSection(liveRunViewModel: liveRunViewModel)
+            DistanceSection(distance: liveRunViewModel.distance.convertToMile())
             
             Spacer()
             
             HStack(spacing: 30) {
-                AvgPaceSection(liveRunViewModel: liveRunViewModel)
+                AvgPaceSection(pace: liveRunViewModel.pace)
                 HeartRateSection()
             }
             .padding(.bottom, 80)
             .frame(maxWidth: .infinity, alignment: .center)
 
             HStack(spacing: 20) {
-                ResetButton(liveRunViewModel: liveRunViewModel)
+                SmallWorkoutButton(buttonImage: "square.fill") {
+                    liveRunViewModel.resetRun()
+                }
+                
                 PauseButton(liveRunViewModel: liveRunViewModel, homeViewModel: homeViewModel)
-                ExitButton(liveRunViewModel: liveRunViewModel, homeViewModel: homeViewModel)
+                
+                SmallWorkoutButton(buttonImage: "arrow.down.right.and.arrow.up.left") {
+                    liveRunViewModel.resetRun()
+                    homeViewModel.activeScreenCover = nil
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.leading, 80)
@@ -50,13 +57,12 @@ struct WorkoutView: View {
     WorkoutView(liveRunViewModel: LiveRunViewModel(), homeViewModel: HomeViewModel())
 }
 
-// MARK:
 private struct TimeSection: View {
-    @ObservedObject var liveRunViewModel: LiveRunViewModel
+    let time: String
     
     var body: some View {
         VStack {
-            Text(liveRunViewModel.elapsedTime.converToTimerFormat())
+            Text(time)
                 .font(.system(size: 65, weight: .regular, design: .monospaced))
                 
             Text("TIME")
@@ -65,13 +71,12 @@ private struct TimeSection: View {
     }
 }
 
-// MARK:
 private struct DistanceSection: View {
-    @ObservedObject var liveRunViewModel: LiveRunViewModel
+    let distance: String
     
     var body: some View {
         VStack {
-            Text(liveRunViewModel.distance.convertToMile())
+            Text(distance)
                 .font(.system(size: 120, weight: .bold, design: .default))
             
             Text("MILES")
@@ -80,13 +85,12 @@ private struct DistanceSection: View {
     }
 }
 
-// MARK:
 private struct AvgPaceSection: View {
-    @ObservedObject var liveRunViewModel: LiveRunViewModel
+    let pace: String
     
     var body: some View {
         VStack {
-            Text(liveRunViewModel.pace)
+            Text(pace)
                 .font(.system(size: 35, weight: .regular))
             
             Text("AVG PACE")
@@ -95,7 +99,6 @@ private struct AvgPaceSection: View {
     }
 }
 
-// MARK:
 private struct HeartRateSection: View {
     var body: some View {
         VStack {
@@ -119,7 +122,6 @@ private struct HeartRateSection: View {
     }
 }
 
-// MARK:
 private struct PauseButton: View {
     @ObservedObject var liveRunViewModel: LiveRunViewModel
     @ObservedObject var homeViewModel: HomeViewModel
@@ -141,39 +143,4 @@ private struct PauseButton: View {
     }
 }
 
-// MARK:
-private struct ResetButton: View {
-    @ObservedObject var liveRunViewModel: LiveRunViewModel
-    
-    var body: some View {
-        Button {
-            liveRunViewModel.resetRun()
-        } label: {
-            Image(systemName: "square.fill")
-                .font(.system(.title3))
-                .padding(20)
-                .background(.primaryBackground)
-                .clipShape(Circle())
-        }
-    }
-}
-
-// MARK:
-private struct ExitButton: View {
-    @ObservedObject var liveRunViewModel: LiveRunViewModel
-    @ObservedObject var homeViewModel: HomeViewModel
-    
-    var body: some View {
-        Button {
-            liveRunViewModel.resetRun()
-            homeViewModel.activeScreenCover = nil
-        } label: {
-            Image(systemName: "arrow.down.right.and.arrow.up.left")
-                .font(.system(.title3))
-                .padding(20)
-                .background(.primaryBackground)
-                .clipShape(Circle())
-        }
-    }
-}
 

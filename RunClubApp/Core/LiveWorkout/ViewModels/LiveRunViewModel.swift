@@ -13,28 +13,19 @@ import HealthKit
 
 class LiveRunViewModel: ObservableObject {
     @Published var displayRegion: MapCameraPosition = .region(MKCoordinateRegion())
-    @Published var pace: String = "00:00"
-    @Published var distance: Double = 0.0 {
-        didSet {
-            if distance > 0 {
-                let secondsPerMile = self.elapsedTime / (self.distance * Constants.mileMultiplier)
-                
-                let minutes = Int(secondsPerMile / 60)
-                let seconds = Int(secondsPerMile) % 60
-                
-                self.pace = String(format: "%02d:%02d", minutes, seconds)
-            }
-        }
-    }
-    @Published var elapsedTime: Double = 0.0
-    @Published var workoutIsPaused: Bool = false
-    @Published var runTitle: String = ""
     @Published var locationList: [CLLocationCoordinate2D] = []
     
-    @Published var flightCount: Double = 0
+    @Published var runTitle: String = ""
+    @Published var pace: String = "00:00"
+    @Published var distance: Double = 0.0
+    @Published var elapsedTime: Double = 0.0
+    
+    @Published var elevation: Double = 0
     @Published var heartRate: Double = 0
     @Published var activeEnergy: Double = 0
+    
     @Published var errorMessage: String?
+    @Published var workoutIsPaused: Bool = false
     
     private let locationService: MapKitManager
     private let dataManager: DataManager
@@ -48,7 +39,6 @@ class LiveRunViewModel: ObservableObject {
         addSubscriber()
     }
     
-    //TODO: add some comments to understand this
     private func addSubscriber() {
         locationService.$displayRegion
             .sink { [weak self] newDisplayRegion in
@@ -59,6 +49,24 @@ class LiveRunViewModel: ObservableObject {
         locationService.$distanceCovered
             .sink { [weak self] newDistance in
                 self?.distance = newDistance
+                
+                if newDistance > 0 {
+                    if let elpasedTime = self?.elapsedTime,
+                       let distance = self?.distance {
+                        let secondsPerMile = elpasedTime / (distance * Constants.mileMultiplier)
+                        
+                        let minutes = Int(secondsPerMile / 60)
+                        let seconds = Int(secondsPerMile) % 60
+                        
+                        self?.pace = String(format: "%02d:%02d", minutes, seconds)
+                    }
+                }
+            }
+            .store(in: &cancellables)
+        
+        locationService.$elevationGained
+            .sink { [weak self] elevationGain in
+                self?.elevation = elevationGain
             }
             .store(in: &cancellables)
         
@@ -105,15 +113,17 @@ class LiveRunViewModel: ObservableObject {
     
     func saveRunData() async throws {
         let codableCoordinates = locationList.map { Coordinate(latitude: $0.latitude, longitude: $0.longitude) }
+        let elevationGained = locationService.elevationGained
 
         if let userID = await SupabaseAuthManager.shared.currentSession?.user.id {
             let currentRun = Run(
                 id: nil,
+                title: runTitle,
                 createdAt: nil,
                 distance: distance.convertToMile(),
                 elpasedTime: elapsedTime.converToTimerFormat(),
                 pace: distance.convertToPace(),
-                title: runTitle,
+                elevationGain: elevationGained,
                 coordinates: codableCoordinates,
                 userID: userID
             )

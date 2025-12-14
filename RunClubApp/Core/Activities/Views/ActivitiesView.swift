@@ -30,7 +30,8 @@ struct ActivitiesView: View {
                                let coordinates = viewModel.locationList[runID] {
                                 CardMap(startCoordinate: start, endCoordinate: end, coordinates: coordinates)
                             }
-                            CardStats(time: run.elpasedTime, pace: run.pace, elevation: "N/A")
+                            
+                            CardStats(time: run.elpasedTime, pace: run.pace, elevation: run.elevationGain.convertToFeet())
                         }
                     }
                 }
@@ -49,7 +50,7 @@ struct ActivitiesView: View {
     ActivitiesView()
 }
 
-struct CardHeader: View {
+private struct CardHeader: View {
     let title: String
     let date: String
     
@@ -73,7 +74,7 @@ struct CardHeader: View {
     }
 }
 
-struct CardMap: View {
+private struct CardMap: View {
     let startCoordinate: CLLocationCoordinate2D
     let endCoordinate: CLLocationCoordinate2D
     let coordinates: [CLLocationCoordinate2D]
@@ -92,7 +93,7 @@ struct CardMap: View {
     }
 }
 
-struct CardStats: View {
+private struct CardStats: View {
     let time: String
     let pace: String
     let elevation: String
