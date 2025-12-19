@@ -1,99 +1,87 @@
-Yak Club App
-==========
+# 🏃‍♂️ RunClubApp (Yak Club)
 
-**RunClubApp** is a mobile application designed to organize, track, and motivate running groups and individual runners. It aims to foster a **community spirit** while providing essential, data-driven tools for training and progress monitoring.
+**RunClubApp** is a high-performance, full-stack mobile application designed to organize, track, and motivate running communities. By combining a native **SwiftUI** frontend with a **Vapor** (Swift-based) backend and **Supabase** for real-time data, this project delivers a seamless, type-safe experience across the entire stack.
 
-This project demonstrates proficiency in building a **location-aware**, data-intensive application for a dedicated fitness niche, highlighting competence in **SwiftUI**, **Core Location**, and **Supabase** for data persistence.
+This project showcases proficiency in building **location-aware**, data-intensive applications, highlighting expertise in **Swift Concurrency**, **Core Location**, and **RESTful API design**.
 
-<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2025-10-30 at 21 50 21" src="https://github.com/user-attachments/assets/c7ef11cf-7581-40de-a6ec-4119257eee92" />
-<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2025-10-30 at 21 50 12" src="https://github.com/user-attachments/assets/4aae139e-f81d-4dd4-a377-33fcac853746" />
-<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2025-10-30 at 21 50 05" src="https://github.com/user-attachments/assets/4b9877f8-2898-418f-848c-e351ef6cb14f" />
-<img width="200" alt="Simulator Screenshot - iPhone 17 Pro - 2025-10-30 at 21 50 28" src="https://github.com/user-attachments/assets/d695d2f5-9d21-4e5a-9fb5-f5a6cfd036de" />
+<p align="center">
+  <img width="200" alt="Activity Tracking" src="https://github.com/user-attachments/assets/c7ef11cf-7581-40de-a6ec-4119257eee92" />
+  <img width="200" alt="Progress Metrics" src="https://github.com/user-attachments/assets/4aae139e-f81d-4dd4-a377-33fcac853746" />
+  <img width="200" alt="Community Feed" src="https://github.com/user-attachments/assets/4b9877f8-2898-418f-848c-e351ef6cb14f" />
+  <img width="200" alt="User Profile" src="https://github.com/user-attachments/assets/d695d2f5-9d21-4e5a-9fb5-f5a6cfd036de" />
+</p>
 
-✨ Features
-----------
+---
 
-The application is structured around three core pillars: tracking, community, and progress.
+## 🏗 Project Architecture
+
+This repository is managed as a **Monorepo**, allowing for shared data models between the frontend and backend. This structure ensures that changes to data structures are reflected immediately across both the app and the server.
+
+
+
+* **`RunClubApp/`**: The native iOS application built with SwiftUI.
+* **`RunClubBackend/`**: The server-side Swift (Vapor) API handling business logic and synchronization.
+
+---
+
+## ✨ Features
 
 ### 🏃 Activity Tracking
+* **Precision GPS Tracking:** Real-time route visualization using **MapKit** and **Core Location**.
+* **Live Metrics:** Instant feedback on pace, elevation gain, and duration.
+* **HealthKit Integration:** Seamlessly syncs workouts to Apple Health to contribute to activity rings.
 
-*   **GPS Tracking:** Records route visualization, distance, pace, elevation, and duration for every run with high precision.
-    
-*   **Real-Time Metrics:** Displays live speed, distance, and time during the activity for immediate feedback.
-    
-*   **Historical Data:** Provides a detailed, accessible log of all past runs with comprehensive summary statistics.
-    
-*   **HealthKit Integration (iOS):** Synchronizes run data seamlessly with the user's Apple Health records for holistic fitness tracking.    
+### 📊 Progress & Social
+* **Personal Bests (PBs):** Automated recognition of milestones (Fastest 5K, Longest Run).
+* **Community Spirit:** Join clubs, participate in group goals, and view real-time leaderboards.
+* **Historical Analysis:** Comprehensive breakdown of monthly and yearly performance trends.
 
-### 📊 Progress & Goals
+---
 
-*   **Personal Bests (PBs):** Automatically tracks, highlights, and celebrates new personal records (e.g., fastest 5K, 10K, longest distance).
-    
-*   **Goal Setting:** Set and monitor personalized distance goals for the week or month, providing visual feedback on progress.
-    
+## 🛠 Tech Stack
 
-🛠️ Technologies Used
----------------------
+| Component | Technology |
+| :--- | :--- |
+| **Frontend** | **SwiftUI**, Swift 6.0, MapKit, HealthKit, Core Location |
+| **Backend** | **Vapor 4** (Server-Side Swift), Swift Concurrency |
+| **Database** | **Postgres** via **Supabase** |
+| **Auth** | **Supabase Auth** (JWT-based) |
+| **Architecture** | **MVVM** + Dependency Injection |
 
-This project leverages modern iOS development standards and a robust open-source backend:
+---
 
-*   **Language:** **Swift**
-    
-*   **UI Framework:** **SwiftUI** (utilizing the latest declarative patterns)
-    
-*   **Mapping:** **MapKit** (for displaying and tracking routes with custom overlays)
-    
-*   **Health Data:** **HealthKit** (for deep integration with the iOS health ecosystem)
-    
-*   **Location Services:** **Core Location** (for accurate, battery-efficient GPS data)
-    
-*   **Backend/Data Storage:** **Supabase** (used for user **Authentication**, real-time data with **Postgres**, and storage).
-    
+## 🚀 Setup and Installation
 
-🚀 Setup and Installation
--------------------------
+### Prerequisites
+* **Xcode 15+**
+* **Swift 6.0+**
+* **Vapor Toolbox** (`brew install vapor`)
 
-To get a copy of the project up and running on your local machine for development and testing, you will need **Xcode 14+** installed.
+### 1. Backend Setup (Vapor)
+1. Navigate to the backend directory: `cd RunClubBackend`.
+2. Create a `.env` file: `cp .env.example .env`.
+3. Add your **Supabase URL** and **Service Role Key** to the `.env` file.
+4. Run the server: `swift run`.
 
-1.  **Clone the repository:**
-    
-2.  **Navigate to the project directory:**
-    
-3.  **Install Dependencies (Supabase Swift Library):**
-    
-    *   Open the project in Xcode:
-        
-    *   Navigate to **File > Add Packages...** and add the Supabase Swift library package URL.
-        
-4.  **Set up Supabase Configuration:**
-    
-    *   Create a new project in the .
-        
-    *   Get your **Project URL** and **Anon Key** from the project settings.
-        
-    *   Update the appropriate configuration file in the project (e.g., a Constants.swift file) with your Supabase credentials:
-        
-5.  **Enable Required Capabilities:**
-    
-    *   In Xcode, select the **RunClubApp** target and navigate to **Signing & Capabilities**.
-        
-    *   Ensure the following capabilities are enabled and properly configured for your team:
-        
-        *   Location Services (required for GPS tracking).
-            
-        *   HealthKit (required for saving and reading workout data).
-            
-6.  **Run the app:** Select an iOS simulator or a physical device and press **Cmd + R** to build and run the application.
-    
+### 2. Frontend Setup (iOS)
+1. Open `RunClubApp.xcodeproj` in Xcode.
+2. Ensure **Location Services** and **HealthKit** capabilities are enabled in the "Signing & Capabilities" tab.
+3. Update your `Constants.swift` with your local Vapor URL (e.g., `http://localhost:8080`) and your Supabase credentials.
+4. Build and run (**Cmd + R**) on a simulator or device.
 
-🤝 Contributing
----------------
+---
 
-Contributions are welcome! If you have suggestions for features, bug reports, or want to contribute code, please feel free to open an issue or submit a pull request.
+## 🔒 Security
+* **Secrets Management:** Sensitive keys are managed via environment variables and are excluded from version control via `.gitignore`.
+* **Type Safety:** Shared `Codable` models ensure that the API and the App never fall out of sync.
 
-📜 License
-----------
+---
 
-This project is licensed under the **MIT License** - see the file for details.
+## 🤝 Contributing
+Contributions are welcome! If you have suggestions for features or bug reports, please feel free to open an issue or submit a pull request.
 
-_This project was created by_ _**ctechasiri1**__._
+## 📜 License
+This project is licensed under the **MIT License**.
+
+---
+_Developed with ❤️ by [**ctechasiri1**](https://github.com/ctechasiri1)_
