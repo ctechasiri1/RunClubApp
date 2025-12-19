@@ -1,8 +1,8 @@
 # 🏃‍♂️ RunClubApp (Yak Club)
 
-**RunClubApp** is a high-performance, full-stack mobile application designed to organize, track, and motivate running communities. By combining a native **SwiftUI** frontend with a **Vapor** (Swift-based) backend and **Supabase** for real-time data, this project delivers a seamless, type-safe experience across the entire stack.
+**RunClubApp** is a high-performance, full-stack mobile application designed to organize, track, and motivate running communities. Originally built with a BaaS (Backend-as-a-Service) approach, the project has migrated to a **100% Swift stack**, utilizing a custom **Vapor** backend for maximum control, type safety, and code sharing between the client and server.
 
-This project showcases proficiency in building **location-aware**, data-intensive applications, highlighting expertise in **Swift Concurrency**, **Core Location**, and **RESTful API design**.
+This project showcases proficiency in building **location-aware**, data-intensive applications, highlighting expertise in **Swift Concurrency**, **Fluent ORM**, and **RESTful API design**.
 
 <p align="center">
   <img width="200" alt="Activity Tracking" src="https://github.com/user-attachments/assets/c7ef11cf-7581-40de-a6ec-4119257eee92" />
@@ -15,12 +15,12 @@ This project showcases proficiency in building **location-aware**, data-intensiv
 
 ## 🏗 Project Architecture
 
-This repository is managed as a **Monorepo**, allowing for shared data models between the frontend and backend. This structure ensures that changes to data structures are reflected immediately across both the app and the server.
+This repository is managed as a **Monorepo**, facilitating a shared codebase for data models. By moving from Supabase to Vapor, the app now uses a mediated architecture where the backend controls all data validation and business logic.
 
 
 
-* **`RunClubApp/`**: The native iOS application built with SwiftUI.
-* **`RunClubBackend/`**: The server-side Swift (Vapor) API handling business logic and synchronization.
+* **`RunClubApp/`**: Native iOS application built with **SwiftUI**.
+* **`RunClubBackend/`**: Server-side API built with **Vapor**, using **Fluent** to interface with a PostgreSQL database.
 
 ---
 
@@ -29,7 +29,7 @@ This repository is managed as a **Monorepo**, allowing for shared data models be
 ### 🏃 Activity Tracking
 * **Precision GPS Tracking:** Real-time route visualization using **MapKit** and **Core Location**.
 * **Live Metrics:** Instant feedback on pace, elevation gain, and duration.
-* **HealthKit Integration:** Seamlessly syncs workouts to Apple Health to contribute to activity rings.
+* **HealthKit Integration:** Synchronizes workouts to Apple Health to contribute to activity rings.
 
 ### 📊 Progress & Social
 * **Personal Bests (PBs):** Automated recognition of milestones (Fastest 5K, Longest Run).
@@ -44,8 +44,8 @@ This repository is managed as a **Monorepo**, allowing for shared data models be
 | :--- | :--- |
 | **Frontend** | **SwiftUI**, Swift 6.0, MapKit, HealthKit, Core Location |
 | **Backend** | **Vapor 4** (Server-Side Swift), Swift Concurrency |
-| **Database** | **Postgres** via **Supabase** |
-| **Auth** | **Supabase Auth** (JWT-based) |
+| **Database** | **PostgreSQL** (via Fluent ORM) |
+| **Data Models** | **Shared Swift Package** (DTOs used by both App & Server) |
 | **Architecture** | **MVVM** + Dependency Injection |
 
 ---
@@ -56,29 +56,30 @@ This repository is managed as a **Monorepo**, allowing for shared data models be
 * **Xcode 15+**
 * **Swift 6.0+**
 * **Vapor Toolbox** (`brew install vapor`)
+* **Docker** (Recommended for running a local Postgres instance)
 
 ### 1. Backend Setup (Vapor)
 1. Navigate to the backend directory: `cd RunClubBackend`.
-2. Create a `.env` file: `cp .env.example .env`.
-3. Add your **Supabase URL** and **Service Role Key** to the `.env` file.
-4. Run the server: `swift run`.
+2. Create your environment file: `cp .env.example .env`.
+3. Configure your `DATABASE_URL` in `.env`.
+4. Run migrations and start the server: `swift run App migrate` then `swift run App serve`.
 
 ### 2. Frontend Setup (iOS)
 1. Open `RunClubApp.xcodeproj` in Xcode.
-2. Ensure **Location Services** and **HealthKit** capabilities are enabled in the "Signing & Capabilities" tab.
-3. Update your `Constants.swift` with your local Vapor URL (e.g., `http://localhost:8080`) and your Supabase credentials.
-4. Build and run (**Cmd + R**) on a simulator or device.
+2. Ensure **Location Services** and **HealthKit** capabilities are enabled.
+3. Update your Networking layer to point to your local Vapor instance (e.g., `http://localhost:8080`).
+4. Build and run (**Cmd + R**).
 
 ---
 
-## 🔒 Security
-* **Secrets Management:** Sensitive keys are managed via environment variables and are excluded from version control via `.gitignore`.
-* **Type Safety:** Shared `Codable` models ensure that the API and the App never fall out of sync.
+## 🔒 Security & Migration
+* **Vapor Migration:** This project marks the transition from Supabase's managed services to a custom-built Swift API, providing better control over authentication flows and database schema migrations.
+* **Secrets Management:** Sensitive keys are managed via environment variables and are excluded from version control.
 
 ---
 
 ## 🤝 Contributing
-Contributions are welcome! If you have suggestions for features or bug reports, please feel free to open an issue or submit a pull request.
+Contributions are welcome! Please open an issue or submit a pull request for any feature suggestions or bug reports.
 
 ## 📜 License
 This project is licensed under the **MIT License**.
