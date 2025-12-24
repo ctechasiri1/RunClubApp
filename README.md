@@ -1,8 +1,8 @@
 # 🏃‍♂️ RunClubApp (Yak Club)
 
-**RunClubApp** is a high-performance, full-stack mobile application designed to organize, track, and motivate running communities. Originally built with a BaaS (Backend-as-a-Service) approach, the project has migrated to a **100% Swift stack**, utilizing a custom **Vapor** backend for maximum control, type safety, and code sharing between the client and server.
+**RunClubApp** is a high-performance, full-stack mobile application designed to organize, track, and motivate running communities. The project leverages **Supabase** to provide a robust, scalable backend, allowing for real-time data synchronization, secure authentication, and efficient management of location-intensive data.
 
-This project showcases proficiency in building **location-aware**, data-intensive applications, highlighting expertise in **Swift Concurrency**, **Fluent ORM**, and **RESTful API design**.
+This project showcases proficiency in building **location-aware**, data-intensive applications, highlighting expertise in **SwiftUI**, **Combine/Swift Concurrency**, and **PostgreSQL** integration.
 
 <p align="center">
   <img width="200" alt="Activity Tracking" src="https://github.com/user-attachments/assets/c7ef11cf-7581-40de-a6ec-4119257eee92" />
@@ -15,12 +15,10 @@ This project showcases proficiency in building **location-aware**, data-intensiv
 
 ## 🏗 Project Architecture
 
-This repository is managed as a **Monorepo**, facilitating a shared codebase for data models. By moving from Supabase to Vapor, the app now uses a mediated architecture where the backend controls all data validation and business logic.
-
-
+RunClubApp utilizes a modern mobile-to-cloud architecture. By leveraging **Supabase**, the app benefits from a direct, secure connection to a PostgreSQL database, handled via **Row Level Security (RLS)** to ensure data integrity and user privacy.
 
 * **`RunClubApp/`**: Native iOS application built with **SwiftUI**.
-* **`RunClubBackend/`**: Server-side API built with **Vapor**, using **Fluent** to interface with a PostgreSQL database.
+* **Supabase Layer**: Manages Authentication, Real-time Database (PostgreSQL), and Cloud Storage for user-generated content.
 
 ---
 
@@ -33,8 +31,8 @@ This repository is managed as a **Monorepo**, facilitating a shared codebase for
 
 ### 📊 Progress & Social
 * **Personal Bests (PBs):** Automated recognition of milestones (Fastest 5K, Longest Run).
-* **Community Spirit:** Join clubs, participate in group goals, and view real-time leaderboards.
-* **Historical Analysis:** Comprehensive breakdown of monthly and yearly performance trends.
+* **Community Spirit:** Join clubs, participate in group goals, and view real-time leaderboards powered by **Supabase Realtime**.
+* **Historical Analysis:** Comprehensive breakdown of performance trends stored and queried from PostgreSQL.
 
 ---
 
@@ -42,39 +40,41 @@ This repository is managed as a **Monorepo**, facilitating a shared codebase for
 
 | Component | Technology |
 | :--- | :--- |
-| **Frontend** | **SwiftUI**, Swift 6.0, MapKit, HealthKit, Core Location |
-| **Backend** | **Vapor 4** (Server-Side Swift), Swift Concurrency |
-| **Database** | **PostgreSQL** (via Fluent ORM) |
-| **Data Models** | **Shared Swift Package** (DTOs used by both App & Server) |
-| **Architecture** | **MVVM** + Dependency Injection |
+| **Frontend** | **SwiftUI**, Swift 6.x, MapKit, HealthKit, Core Location |
+| **Backend** | **Supabase** (PostgREST, GoTrue Auth) |
+| **Database** | **PostgreSQL** |
+| **Authentication** | Supabase Auth (Email/Social) |
+| **Architecture** | **MVVM** + Repository Pattern |
 
 ---
 
 ## 🚀 Setup and Installation
 
 ### Prerequisites
-* **Xcode 15+**
+* **Xcode 16+**
 * **Swift 6.0+**
-* **Vapor Toolbox** (`brew install vapor`)
-* **Docker** (Recommended for running a local Postgres instance)
+* **Supabase Account** (Free tier works perfectly)
 
-### 1. Backend Setup (Vapor)
-1. Navigate to the backend directory: `cd RunClubBackend`.
-2. Create your environment file: `cp .env.example .env`.
-3. Configure your `DATABASE_URL` in `.env`.
-4. Run migrations and start the server: `swift run App migrate` then `swift run App serve`.
+### 1. Supabase Backend Setup
+1.  Create a new project at [database.new](https://database.new).
+2.  In the **SQL Editor**, run your table migrations (Users, Activities, Clubs).
+3.  Enable **Row Level Security (RLS)** on all tables to secure user data.
+4.  Navigate to **Project Settings > API** to retrieve your `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
 
 ### 2. Frontend Setup (iOS)
-1. Open `RunClubApp.xcodeproj` in Xcode.
-2. Ensure **Location Services** and **HealthKit** capabilities are enabled.
-3. Update your Networking layer to point to your local Vapor instance (e.g., `http://localhost:8080`).
-4. Build and run (**Cmd + R**).
+1.  Open `RunClubApp.xcodeproj` in Xcode.
+2.  Add your Supabase credentials to your configuration (e.g., `Secrets.plist` or a dedicated `SupabaseManager` config):
+    * `SUPABASE_URL`
+    * `SUPABASE_ANON_KEY`
+3.  Ensure **Location Services** and **HealthKit** capabilities are enabled in the Project Settings.
+4.  Build and run (**Cmd + R**).
 
 ---
 
-## 🔒 Security & Migration
-* **Vapor Migration:** This project marks the transition from Supabase's managed services to a custom-built Swift API, providing better control over authentication flows and database schema migrations.
-* **Secrets Management:** Sensitive keys are managed via environment variables and are excluded from version control.
+## 🔒 Security & Data Integrity
+* **Row Level Security (RLS):** Policies are configured so users can only read/write their own running data and public club info.
+* **PostGIS:** (Planned) Utilizing PostgreSQL's PostGIS extension for advanced geospatial queries and route matching.
+* **Secure Storage:** Authentication tokens are stored securely in the iOS Keychain via the Supabase Swift SDK.
 
 ---
 
