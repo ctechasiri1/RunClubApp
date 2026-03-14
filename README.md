@@ -1,4 +1,4 @@
-# 🏃‍♂️ RunClubApp (Yak Club)
+# 🏃‍♂️ RunClubApp
 
 **RunClubApp** is a high-performance, full-stack mobile application designed to organize, track, and motivate running communities. The project leverages **Supabase** to provide a robust, scalable backend, allowing for real-time data synchronization, secure authentication, and efficient management of location-intensive data.
 
